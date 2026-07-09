@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jaskaran Singh</title>
+  <link rel="icon" href="favicon.ico?" type="image/x-icon">
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+
+<body>
+
+  <div class="scanlines"></div>
+  <div class="noise"></div>
+
+  <div id="app">
+
+    <header>
+      <div class="header-left">
+        <span class="header-sig" id="hdr-name">// quantapixel</span>
+        <span class="header-crumb" id="header-crumb"></span>
+      </div>
+      <nav>
+        <a class="nav-a" onclick="showPage('projects')">projects</a>
+        <a class="nav-a" onclick="showPage('about')">about</a>
+        <a class="nav-a" href="resume.pdf" target="_blank" rel="noopener noreferrer">resume</a>
+      </nav>
+    </header>
+
+    <div id="reading-bar"></div>
+
+    <!-- HOME -->
+    <main id="page-home" class="page active">
+
+      <section class="hero-section">
+
+        <div class="terminal-prefix">visitor@portfolio:~$</div>
+
+        <h1 class="glitch-name" id="hero-name" data-text="Jaskaran Singh">Jaskaran Singh</h1>
+
+        <p class="hero-tagline" id="hero-tagline">cs student · builder · ctf player</p>
+
+        <div class="live-bar">
+          <div class="live-item" id="weather-block">
+            <span class="live-label">outside</span>
+            <span class="live-val" id="weather-val">—</span>
+          </div>
+          <div class="live-sep">|</div>
+          <div class="live-item">
+            <span class="live-label">local time</span>
+            <span class="live-val" id="local-time-val">loading...</span>
+          </div>
+          <div class="live-sep">|</div>
+          <div class="live-item" id="spotify-block">
+            <span class="live-label">listening</span>
+            <span class="live-val">
+              <span id="spotify-music-icon" style="display:none">♫ </span><span id="spotify-val">not playing</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="now-block">
+          <div class="now-row">
+            <span class="nk">building</span>
+            <span class="nv" id="s-building"><span class="dot-live"></span>your project</span>
+          </div>
+          <div class="now-row">
+            <span class="nk">studying</span>
+            <span class="nv" id="s-at">vit vellore · 1st yr</span>
+          </div>
+          <div class="now-row">
+            <span class="nk">reading</span>
+            <span class="nv" id="s-reading">attention is all you need</span>
+          </div>
+          <div class="now-row">
+            <span class="nk">into</span>
+            <span class="nv" id="s-interest">ai/ml research · cybersecurity</span>
+          </div>
+        </div>
+
+        <div class="social-row">
+          <a class="soc-link" href="https://github.com/Quantapixel" target="_blank" id="lnk-github">github</a>
+          <a class="soc-link" href="https://www.linkedin.com/in/jaskaran-singh-32aa443b3/" target="_blank" id="lnk-linkedin">linkedin</a>
+          <a class="soc-link" href="mailto:js.pentesting@proton.me" target="_blank" id="lnk-email">email</a>
+          <a class="soc-link" href="https://leetcode.com/u/quantapixel/" target="_blank" id="lnk-leetcode">leetcode</a>
+        </div>
+
+      </section>
+
+      <section class="section">
+        <div class="section-hdr">
+          <span class="sh-label">github activity</span>
+          <span class="sh-sub" id="gh-username-display">@quantapixel</span>
+        </div>
+        <div id="github-strip" class="gh-strip">
+          <div class="gh-loading">fetching commits...</div>
+        </div>
+        <div class="gh-stats" id="gh-stats"></div>
+      </section>
+
+    </main>
+
+    <!-- PROJECTS -->
+    <main id="page-projects" class="page hidden">
+      <div class="terminal-prefix">visitor@portfolio:~/projects$</div>
+      <h2 class="page-title">Projects</h2>
+      <p class="page-sub">things I've built, broken, and occasionally shipped.</p>
+      <div id="projects-grid" class="proj-grid" style="margin-top:2.5rem"></div>
+    </main>
+
+    <!-- PROJECT ARTICLE -->
+    <main id="page-project-article" class="page hidden">
+      <div class="art-header">
+        <span class="art-back" id="proj-art-back">← back to projects</span>
+        <div class="art-meta">
+          <span class="art-cat" id="proj-art-cat"></span>
+          <span id="proj-art-date"></span>
+        </div>
+        <h1 class="art-title" id="proj-art-title"></h1>
+        <p class="art-lede" id="proj-art-lede"></p>
+        <div class="art-tags" id="proj-art-tags"></div>
+      </div>
+      <div class="art-body" id="proj-art-body"></div>
+    </main>
+
+    <!-- ABOUT -->
+    <main id="page-about" class="page hidden">
+      <div class="terminal-prefix">visitor@portfolio:~/about$</div>
+      <h2 class="page-title">About</h2>
+      <div class="about-body" style="margin-top:2rem">
+        <p id="about-bio">I'm a CS student obsessed with how systems break — and how to make them not.</p>
+        <p style="margin-top:1.2rem" id="about-bio2">
+          Currently focused on <strong>cybersecurity</strong> and <strong>ML research</strong>.
+        </p>
+        <div class="about-skills" id="about-skills">
+          <div class="skill-group">
+            <div class="sg-label">languages</div>
+            <div class="sg-tags" id="s-langs">Python · JavaScript</div>
+          </div>
+          <div class="skill-group">
+            <div class="sg-label">areas</div>
+            <div class="sg-tags" id="s-areas">cybersecurity · ai/ml · osint · rf · ctf</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <script defer src="app.js"></script>
+  <script>
+  window.va = window.va || function () {
+    (window.vaq = window.vaq || []).push(arguments)
+  }
+  </script>
+
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

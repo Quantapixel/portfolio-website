@@ -1,0 +1,792 @@
+/*just for building article and not in the actual site*/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Article Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&display=swap">
+  <style>
+    /* ── TOKENS (match main.css exactly) ── */
+    :root {
+      --bg: #080808;
+      --bg2: #0e0e0e;
+      --bg3: #141414;
+      --border: #1c1c1c;
+      --border2: #242424;
+      --t1: #ffffff;
+      --t2: #e0e0e0;
+      --t3: #b0b0b0;
+      --t4: #808080;
+      --gold: #d4af6a;
+      --gold2: rgba(212,175,106,.1);
+      --gold3: rgba(212,175,106,.05);
+      --green: #6db87a;
+      --red: #c46b6b;
+      --mono: 'JetBrains Mono', monospace;
+      --serif: 'Fraunces', serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--t2);
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.75;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; font-family: var(--mono); }
+    ::selection { background: var(--gold2); color: var(--t1); }
+
+    /* ── LAYOUT ── */
+    .app {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      grid-template-rows: auto 1fr;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .toolbar {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .7rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+      flex-shrink: 0;
+    }
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .toolbar-title {
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--t4);
+    }
+    .toolbar-title span {
+      color: var(--gold);
+    }
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      background: none;
+      border: 1px solid var(--border2);
+      color: var(--t3);
+      padding: .35rem .9rem;
+      font-size: 11px;
+      letter-spacing: .06em;
+      border-radius: 3px;
+      transition: all .15s;
+    }
+    .btn:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-primary {
+      background: var(--gold2);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .btn-primary:hover { background: rgba(212,175,106,.18); }
+
+    /* ── EDITOR PANEL ── */
+    .editor-panel {
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-header {
+      padding: .7rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--t4);
+      background: var(--bg2);
+      flex-shrink: 0;
+    }
+    .fields {
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: .9rem;
+      overflow-y: auto;
+    }
+    .field { display: flex; flex-direction: column; gap: .3rem; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    .label {
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--t4);
+    }
+    .input {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      color: var(--t1);
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: .45rem .7rem;
+      border-radius: 3px;
+      outline: none;
+      transition: border-color .15s;
+      width: 100%;
+    }
+    .input:focus { border-color: var(--gold); }
+    .input::placeholder { color: var(--t4); }
+    .textarea-content {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      color: var(--t2);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      padding: .6rem .8rem;
+      border-radius: 3px;
+      outline: none;
+      transition: border-color .15s;
+      width: 100%;
+      resize: none;
+      min-height: 260px;
+      line-height: 1.7;
+      tab-size: 2;
+    }
+    .textarea-content:focus { border-color: var(--gold); }
+    .hint {
+      font-size: 10px;
+      color: var(--t4);
+      line-height: 1.5;
+    }
+
+    /* ── CONTENT TOOLBAR ── */
+    .content-toolbar {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      padding: .5rem .8rem;
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-bottom: none;
+      border-radius: 3px 3px 0 0;
+    }
+    .content-toolbar .tb-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--t4);
+      font-size: 10px;
+      font-family: var(--mono);
+      padding: 2px 8px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all .12s;
+    }
+    .content-toolbar .tb-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .content-toolbar .tb-sep {
+      width: 1px;
+      background: var(--border);
+      margin: 2px 3px;
+      align-self: stretch;
+    }
+    .textarea-content.with-toolbar {
+      border-radius: 0 0 3px 3px;
+    }
+
+    /* ── PREVIEW PANEL ── */
+    .preview-panel {
+      overflow-y: auto;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+    }
+    .preview-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+      width: 100%;
+    }
+
+    /* ── ARTICLE STYLES (exact match from main.css) ── */
+    .art-header {
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .art-back {
+      font-size: 12px;
+      color: var(--t4);
+      cursor: default;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+    }
+    .art-meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 11px;
+      color: var(--t4);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    .art-cat { color: var(--gold); }
+    .art-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      font-weight: 400;
+      color: var(--t1);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .art-lede {
+      font-size: 1.1rem;
+      color: var(--t3);
+      line-height: 1.6;
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+    .art-tags {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    .tag {
+      font-size: 10px;
+      color: var(--t4);
+      border: 1px solid var(--border2);
+      padding: 3px 8px;
+      border-radius: 2px;
+      text-transform: lowercase;
+    }
+    .art-body {
+      font-family: var(--serif);
+      font-size: 1rem;
+      color: var(--t2);
+      line-height: 1.85;
+    }
+    .art-body h2 {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--t4);
+      margin-top: 2.8rem;
+      margin-bottom: 1rem;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .art-body h3 {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--t2);
+      margin-top: 2rem;
+      margin-bottom: .6rem;
+    }
+    .art-body p { margin-bottom: 1.3rem; color: var(--t2); }
+    .art-body a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+    .art-body a:hover { color: var(--t1); }
+    .art-body pre {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+    .art-body code {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--gold);
+      line-height: 1.7;
+    }
+    .art-body p code, .art-body li code {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 1px 6px;
+      font-size: 12px;
+    }
+    .art-body ul, .art-body ol { padding-left: 1.4rem; margin-bottom: 1.3rem; }
+    .art-body li { margin-bottom: .4rem; }
+    .art-body blockquote {
+      border-left: 2px solid var(--gold);
+      padding-left: 1.2rem;
+      margin: 1.5rem 0;
+      color: var(--t3);
+      font-style: italic;
+    }
+    .art-body img {
+      max-width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      margin: 1.5rem 0;
+    }
+    .art-body hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+    .art-body table {
+      width: 100%; border-collapse: collapse;
+      font-family: var(--mono); font-size: 12px; margin-bottom: 1.5rem;
+    }
+    .art-body th {
+      text-align: left; color: var(--t4); font-size: 10px;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: .5rem .8rem; border-bottom: 1px solid var(--border);
+    }
+    .art-body td { padding: .5rem .8rem; border-bottom: 1px solid var(--border); color: var(--t2); }
+    .art-body tr:last-child td { border-bottom: none; }
+
+    /* ── BLOB OUTPUT ── */
+    .blob-section {
+      grid-column: 1 / -1;
+      border-top: 1px solid var(--border);
+      background: var(--bg2);
+      flex-shrink: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease;
+    }
+    .blob-section.open { max-height: 300px; }
+    .blob-inner {
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      height: 100%;
+    }
+    .blob-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .blob-label {
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--t4);
+    }
+    .blob-actions { display: flex; gap: .5rem; }
+    .blob-out {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: .7rem 1rem;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--t3);
+      line-height: 1.6;
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: 180px;
+      white-space: pre;
+      cursor: text;
+      user-select: all;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 3px;
+      padding: .45rem 1rem;
+      font-size: 11px;
+      color: var(--t2);
+      opacity: 0;
+      transition: all .2s;
+      z-index: 9999;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: .5rem;
+      color: var(--t4);
+      font-size: 11px;
+      letter-spacing: .04em;
+    }
+    .empty-state .es-icon { font-size: 1.6rem; opacity: .3; }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--t4); }
+  </style>
+</head>
+
+<body>
+
+<div class="app" id="app">
+
+  <!-- ── TOOLBAR ── -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <span class="toolbar-title">// <span>article builder</span></span>
+    </div>
+    <div class="toolbar-right">
+      <button class="btn" id="btn-clear">clear</button>
+      <button class="btn" id="btn-blob">generate blob</button>
+      <button class="btn btn-primary" id="btn-copy">copy blob</button>
+    </div>
+  </div>
+
+  <!-- ── EDITOR PANEL ── -->
+  <div class="editor-panel">
+    <div class="panel-header">fields</div>
+    <div class="fields">
+
+      <!-- id -->
+      <div class="field">
+        <label class="label" for="f-id">id <span style="color:var(--t4);font-size:9px">(slug, no spaces)</span></label>
+        <input class="input" id="f-id" type="text" placeholder="my-cool-project" autocomplete="off" spellcheck="false" />
+      </div>
+
+      <!-- name + category -->
+      <div class="field-row">
+        <div class="field">
+          <label class="label" for="f-name">name</label>
+          <input class="input" id="f-name" type="text" placeholder="My Cool Project" />
+        </div>
+        <div class="field">
+          <label class="label" for="f-category">category</label>
+          <input class="input" id="f-category" type="text" placeholder="web-hacking" />
+        </div>
+      </div>
+
+      <!-- desc -->
+      <div class="field">
+        <label class="label" for="f-desc">desc <span style="color:var(--t4);font-size:9px">(shown on card)</span></label>
+        <input class="input" id="f-desc" type="text" placeholder="Short one-line description" />
+      </div>
+
+      <!-- date + tags -->
+      <div class="field-row">
+        <div class="field">
+          <label class="label" for="f-date">date <span style="color:var(--t4);font-size:9px">(YYYY-MM)</span></label>
+          <input class="input" id="f-date" type="text" placeholder="2026-07" />
+        </div>
+        <div class="field">
+          <label class="label" for="f-tags">tags <span style="color:var(--t4);font-size:9px">(comma separated)</span></label>
+          <input class="input" id="f-tags" type="text" placeholder="javascript, security" />
+        </div>
+      </div>
+
+      <!-- lede -->
+      <div class="field">
+        <label class="label" for="f-lede">lede <span style="color:var(--t4);font-size:9px">(italic subtitle)</span></label>
+        <input class="input" id="f-lede" type="text" placeholder="A one-sentence hook for the article" />
+      </div>
+
+      <!-- content -->
+      <div class="field">
+        <label class="label">content <span style="color:var(--t4);font-size:9px">(HTML)</span></label>
+        <div class="content-toolbar" id="content-toolbar">
+          <button class="tb-btn" data-wrap="<p>|</p>">p</button>
+          <button class="tb-btn" data-wrap="<h2>|</h2>">h2</button>
+          <button class="tb-btn" data-wrap="<h3>|</h3>">h3</button>
+          <div class="tb-sep"></div>
+          <button class="tb-btn" data-wrap="<strong>|</strong>"><b>b</b></button>
+          <button class="tb-btn" data-wrap="<em>|</em>"><i>i</i></button>
+          <button class="tb-btn" data-wrap='<a href="|">link text</a>'>a</button>
+          <button class="tb-btn" data-wrap="<code>|</code>">`c`</button>
+          <div class="tb-sep"></div>
+          <button class="tb-btn" data-snippet="<pre><code>|</code></pre>">pre</button>
+          <button class="tb-btn" data-snippet="<blockquote>\n  |\n</blockquote>">bq</button>
+          <button class="tb-btn" data-snippet="<ul>\n  <li>|</li>\n  <li></li>\n</ul>">ul</button>
+          <button class="tb-btn" data-snippet="<ol>\n  <li>|</li>\n  <li></li>\n</ol>">ol</button>
+          <div class="tb-sep"></div>
+          <button class="tb-btn" data-snippet="<hr>">hr</button>
+          <button class="tb-btn" data-snippet='<img src="|" alt="">'>img</button>
+        </div>
+        <textarea class="textarea-content with-toolbar" id="f-content" placeholder="Write your article HTML here...&#10;&#10;<p>Start with a paragraph...</p>&#10;&#10;<h2>A Section</h2>&#10;<p>More content here.</p>"></textarea>
+      </div>
+
+      <p class="hint">Live preview updates as you type. When done, click <strong style="color:var(--t2)">generate blob</strong> then <strong style="color:var(--t2)">copy blob</strong> and paste into the PROJECTS array in app.js.</p>
+
+    </div>
+  </div>
+
+  <!-- ── PREVIEW PANEL ── -->
+  <div class="preview-panel" id="preview-panel">
+    <div class="panel-header">live preview</div>
+    <div class="preview-wrap" id="preview-wrap">
+      <div class="empty-state" id="empty-state">
+        <div class="es-icon">◈</div>
+        <div>start filling in fields to see a preview</div>
+      </div>
+
+      <div id="preview-content" style="display:none">
+        <div class="art-header">
+          <span class="art-back">← back to projects</span>
+          <div class="art-meta">
+            <span class="art-cat" id="pv-cat"></span>
+            <span id="pv-date"></span>
+          </div>
+          <h1 class="art-title" id="pv-title"></h1>
+          <p class="art-lede" id="pv-lede"></p>
+          <div class="art-tags" id="pv-tags"></div>
+        </div>
+        <div class="art-body" id="pv-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BLOB OUTPUT ── -->
+  <div class="blob-section" id="blob-section">
+    <div class="blob-inner">
+      <div class="blob-header">
+        <span class="blob-label">generated blob — paste into PROJECTS array in app.js</span>
+        <div class="blob-actions">
+          <button class="btn" id="btn-blob-close">close</button>
+          <button class="btn btn-primary" id="btn-blob-copy">copy</button>
+        </div>
+      </div>
+      <div class="blob-out" id="blob-out"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── DOM REFS ──
+  const fId       = document.getElementById('f-id');
+  const fName     = document.getElementById('f-name');
+  const fCategory = document.getElementById('f-category');
+  const fDesc     = document.getElementById('f-desc');
+  const fDate     = document.getElementById('f-date');
+  const fTags     = document.getElementById('f-tags');
+  const fLede     = document.getElementById('f-lede');
+  const fContent  = document.getElementById('f-content');
+
+  const pvCat   = document.getElementById('pv-cat');
+  const pvDate  = document.getElementById('pv-date');
+  const pvTitle = document.getElementById('pv-title');
+  const pvLede  = document.getElementById('pv-lede');
+  const pvTags  = document.getElementById('pv-tags');
+  const pvBody  = document.getElementById('pv-body');
+
+  const emptyState      = document.getElementById('empty-state');
+  const previewContent  = document.getElementById('preview-content');
+  const blobSection     = document.getElementById('blob-section');
+  const blobOut         = document.getElementById('blob-out');
+  const toast           = document.getElementById('toast');
+
+  // ── HELPERS ──
+
+  function parseTags(raw) {
+    return raw.split(',').map(t => t.trim()).filter(Boolean);
+  }
+
+  function hasAnyInput() {
+    return fId.value || fName.value || fCategory.value ||
+           fDesc.value || fDate.value || fTags.value ||
+           fLede.value || fContent.value;
+  }
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  }
+
+  // ── LIVE PREVIEW ──
+
+  function updatePreview() {
+    if (!hasAnyInput()) {
+      emptyState.style.display = 'flex';
+      previewContent.style.display = 'none';
+      return;
+    }
+    emptyState.style.display = 'none';
+    previewContent.style.display = 'block';
+
+    pvCat.textContent   = fCategory.value || '';
+    pvDate.textContent  = fDate.value || '';
+    pvTitle.textContent = fName.value || '';
+    pvLede.textContent  = fLede.value || '';
+
+    const tags = parseTags(fTags.value);
+    pvTags.innerHTML = tags.map(t => `<span class="tag">${escHtml(t)}</span>`).join('');
+
+    // Render content HTML directly — this is intentional,
+    // the user is writing trusted HTML for their own site.
+    pvBody.innerHTML = fContent.value || '';
+  }
+
+  function escHtml(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // Attach live preview listeners to all fields
+  [fId, fName, fCategory, fDesc, fDate, fTags, fLede, fContent]
+    .forEach(el => el.addEventListener('input', updatePreview));
+
+  // ── BLOB GENERATION ──
+
+  function buildBlob() {
+    const id       = fId.value.trim();
+    const name     = fName.value.trim();
+    const desc     = fDesc.value.trim();
+    const date     = fDate.value.trim();
+    const category = fCategory.value.trim();
+    const tags     = parseTags(fTags.value);
+    const lede     = fLede.value.trim();
+    const content  = fContent.value;
+
+    // Format the tags array as a JS literal
+    const tagsLiteral = '[' + tags.map(t => `"${t.replace(/"/g, '\\"')}"`).join(', ') + ']';
+
+    // Escape backticks and backslashes inside the template literal content
+    const safeContent = content
+      .replace(/\\/g, '\\\\')
+      .replace(/`/g, '\\`')
+      .replace(/\$\{/g, '\\${');
+
+    return `{
+  id: "${id}",
+  name: "${name}",
+  desc: "${desc}",
+  date: "${date}",
+  category: "${category}",
+  tags: ${tagsLiteral},
+  lede: "${lede}",
+  content: \`
+${safeContent}
+  \`
+}`;
+  }
+
+  // ── TOOLBAR SNIPPET INSERTION ──
+
+  document.getElementById('content-toolbar').addEventListener('click', e => {
+    const btn = e.target.closest('.tb-btn');
+    if (!btn) return;
+
+    const wrap    = btn.dataset.wrap;
+    const snippet = btn.dataset.snippet;
+    const ta      = fContent;
+    const start   = ta.selectionStart;
+    const end     = ta.selectionEnd;
+    const selected = ta.value.slice(start, end);
+
+    let insert, cursorPos;
+
+    if (wrap) {
+      // Split on the pipe to find where selected/cursor goes
+      const [before, after] = wrap.split('|');
+      insert    = before + (selected || '') + after;
+      cursorPos = start + before.length + (selected ? selected.length : 0);
+    } else if (snippet) {
+      // Replace pipe with selected text or empty
+      insert    = snippet.replace('|', selected || '');
+      cursorPos = start + snippet.indexOf('|');
+      if (cursorPos < start) cursorPos = start + insert.length;
+    } else {
+      return;
+    }
+
+    ta.value = ta.value.slice(0, start) + insert + ta.value.slice(end);
+    ta.focus();
+    ta.setSelectionRange(cursorPos, cursorPos);
+    updatePreview();
+  });
+
+  // ── BUTTON HANDLERS ──
+
+  document.getElementById('btn-blob').addEventListener('click', () => {
+    const blob = buildBlob();
+    blobOut.textContent = blob;
+    blobSection.classList.add('open');
+    // scroll blob into view
+    blobSection.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  });
+
+  function copyBlobToClipboard() {
+    const text = blobOut.textContent;
+    if (!text) { showToast('nothing to copy — generate blob first'); return; }
+    navigator.clipboard.writeText(text)
+      .then(() => showToast('blob copied to clipboard ✓'))
+      .catch(() => {
+        // fallback for browsers without clipboard API
+        const sel = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(blobOut);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand('copy');
+        sel.removeAllRanges();
+        showToast('blob copied ✓');
+      });
+  }
+
+  document.getElementById('btn-copy').addEventListener('click', () => {
+    const blob = buildBlob();
+    blobOut.textContent = blob;
+    blobSection.classList.add('open');
+    copyBlobToClipboard();
+  });
+
+  document.getElementById('btn-blob-copy').addEventListener('click', copyBlobToClipboard);
+
+  document.getElementById('btn-blob-close').addEventListener('click', () => {
+    blobSection.classList.remove('open');
+  });
+
+  document.getElementById('btn-clear').addEventListener('click', () => {
+    if (!hasAnyInput()) return;
+    if (!confirm('Clear all fields?')) return;
+    [fId, fName, fCategory, fDesc, fDate, fTags, fLede, fContent]
+      .forEach(el => { el.value = ''; });
+    blobSection.classList.remove('open');
+    updatePreview();
+  });
+
+  // ── AUTO-SLUG ──
+  // Auto-fill id from name if id is empty when name changes
+  fName.addEventListener('input', () => {
+    if (!fId.value) {
+      fId.value = fName.value
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+      // Don't call updatePreview again — the name listener already does it
+    }
+  });
+
+  // ── AUTO DATE ──
+  // Pre-fill date with current YYYY-MM on load
+  if (!fDate.value) {
+    const now = new Date();
+    fDate.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  }
+</script>
+
+</body>
+</html>

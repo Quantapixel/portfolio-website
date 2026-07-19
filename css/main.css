@@ -851,3 +851,46 @@ nav {
   border-bottom: none;
 }
 
+
+/* ── WEBRING ── */
+.webring-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.webring-nav a {
+  font-size: 11px;
+  font-family: var(--mono);
+  letter-spacing: .08em;
+  color: #e8f4ff;
+  background-color: #14396e;
+  background-image: radial-gradient(circle, rgba(255,255,255,.18) 1px, transparent 1px);
+  background-size: 6px 6px;
+  border: 1px solid #1e4f96;
+  border-radius: 2px;
+  padding: 6px 14px;
+  transition: background-color .2s, border-color .2s, color .2s;
+  white-space: nowrap;
+}
+.webring-nav a:hover {
+  background-color: #1a4d8a;
+  border-color: #2a6aad;
+  color: #fff;
+}
+.webring-nav a:nth-child(2) {
+  background-color: transparent;
+  background-image: linear-gradient(90deg, #6db87a, #d4af6a, #c46b6b);
+  background-size: 200% 100%;
+  border: none;
+  color: #080808;
+  font-weight: 500;
+  letter-spacing: .1em;
+  transition: background-position .4s ease, opacity .15s;
+}
+.webring-nav a:nth-child(2):hover {
+  background-position: 100% 0;
+  opacity: .9;
+  color: #080808;
+  border: none;
+}

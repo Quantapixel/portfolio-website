@@ -190,9 +190,7 @@ function renderWorkFilters() {
 
   const categories = [
     { type: 'category', value: 'all', label: 'All' },
-    { type: 'category', value: 'projects', label: 'Projects' },
-    { type: 'category', value: 'writeups', label: 'Write-ups' },
-    { type: 'category', value: 'research', label: 'Research' }
+    { type: 'category', value: 'web-hacking', label: 'Web hacking' }
   ];
   const tags = [...new Set(indexProjects.flatMap(project => project.tags || []))].sort();
   const tagValues = [

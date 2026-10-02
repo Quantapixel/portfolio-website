@@ -13,14 +13,6 @@ class Handler(SimpleHTTPRequestHandler):
             self.path = '/about.html'
         elif route == '/projects':
             self.path = '/index.html'
-        elif route == '/blog':
-            self.path = '/blog.html'
-        elif route == '/api/spotify':
-            self.send_response(200)
-            self.send_header('Content-Type', 'application/json')
-            self.end_headers()
-            self.wfile.write(b'{"isPlaying":false}')
-            return
         super().do_GET()
 
 if __name__ == '__main__':

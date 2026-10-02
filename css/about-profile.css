@@ -7,10 +7,14 @@
 .about-expanded .about-intro h1 span { color: var(--gold); }
 .about-expanded .about-intro > p:not(.eyebrow) { max-width: 570px; }
 .toolkit-label { margin-top: 30px; color: #bda779; font: 8px var(--mono); letter-spacing: .13em; }
+.about-expanded .toolkit-label { margin-top: 38px; color: var(--t1); font-family: var(--serif); font-weight: 300; font-size: clamp(28px, 3vw, 42px); line-height: 1.1; letter-spacing: -.02em; text-transform: none; }
 .about-toolkit { margin-top: 28px; border-top: 1px solid var(--border2); }
 .about-toolkit > div { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
 .about-toolkit dt { color: #bda779; font: 8px var(--mono); letter-spacing: .06em; line-height: 1.6; }
 .about-toolkit dd { margin: 0; font-size: 10px; line-height: 1.75; color: #aaa59a; }
+.about-expanded .about-toolkit .skill-chips { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 5px; }
+.about-expanded .about-toolkit .skill-chips span { display: inline-flex; align-items: center; min-height: 24px; padding: 4px 9px; border: 1px solid #2d2b25; border-radius: 3px; background: linear-gradient(145deg, #151410, #10100e); color: #c7bfae; font: 8px/1.3 var(--mono); white-space: nowrap; transition: border-color .2s, color .2s, background .2s; }
+.about-expanded .about-toolkit .skill-chips span:hover { border-color: #80683d; color: #ead8b2; background: #1b1913; }
 .about-profile-links { display: flex; flex-wrap: wrap; gap: 25px; margin-top: 24px; font-size: 10px; color: #bda779; }
 .about-profile-links span { margin-left: 7px; }
 .about-experience { position: relative; align-self: center; min-width: 0; }

@@ -4,15 +4,44 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#080808" />
-  <title>About — Jaskaran Singh</title>
+  <title>About</title>
   <meta name="description" content="About Jaskaran Singh: computer science student, AI engineer in the making, founder, and security researcher." />
+  <meta name="author" content="Jaskaran Singh" />
+  <meta name="robots" content="index,follow" />
+  <link rel="author" href="https://jaskaran.xyz/about" />
   <link rel="canonical" href="https://jaskaran.xyz/about" />
+  <meta property="og:type" content="profile" />
+  <meta property="og:site_name" content="Jaskaran Singh" />
+  <meta property="og:title" content="About" />
+  <meta property="og:description" content="About Jaskaran Singh: computer science student, AI engineer in the making, founder, and security researcher." />
+  <meta property="og:url" content="https://jaskaran.xyz/about" />
+  <meta property="og:image" content="https://jaskaran.xyz/assets/loop-fallback.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="About" />
+  <meta name="twitter:description" content="About Jaskaran Singh: computer science student, AI engineer in the making, founder, and security researcher." />
+  <meta name="twitter:image" content="https://jaskaran.xyz/assets/loop-fallback.webp" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&display=swap" />
   <link rel="stylesheet" href="css/main.css?v=about-2" />
   <link rel="stylesheet" href="css/terminal-identity.css?v=scroll-story-5" />
-  <link rel="stylesheet" href="css/about-profile.css?v=10" />
+  <link rel="stylesheet" href="css/about-profile.css?v=11" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Jaskaran Singh",
+    "url": "https://jaskaran.xyz",
+    "sameAs": [
+      "https://github.com/Quantapixel",
+      "https://www.linkedin.com/in/jaskaran0/",
+      "https://huggingface.co/quantapixel"
+    ],
+    "jobTitle": "Computer Science Student",
+    "description": "Computer science student, security researcher, and AI builder."
+  }
+  </script>
 </head>
 <body>
   <div class="scanlines" aria-hidden="true"></div>
@@ -22,19 +51,20 @@
     <a class="brand header-sig" href="/#home">// quantapixel</a>
     <nav aria-label="Main navigation"><a href="/#home">home</a><a href="/#about" aria-current="location">about</a></nav>
   </header>
+  <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">About</li></ol></nav>
   <main id="about-full" class="about-page" tabindex="-1">
     <section class="about-section about-expanded section-wrap" aria-labelledby="about-title">
       <div class="about-intro">
         <h1 id="about-title">About me</h1>
         <p>I’m Jaskaran, a computer science student at VIT Vellore, aspiring to become an AI engineer. My focus spans deep learning, AI-assisted security analysis, penetration testing, and cybersecurity.</p>
         <p>I also explore RF experimentation, exploit development, firmware research, and embedded hardware. My CTF interests include OSINT, reverse engineering, pwn, and cryptography.</p>
-        <p class="toolkit-label">SKILLS / WHAT I WORK WITH</p>
+        <h2 class="toolkit-label">skills</h2>
         <dl class="about-toolkit">
-          <div><dt>01 / Languages</dt><dd>Python, C++, JavaScript, TypeScript, Rust, Nim, and Bash.</dd></div>
-          <div><dt>02 / Security research</dt><dd>Reconnaissance, OWASP testing, Burp Suite, Nmap, tcpdump, Netcat, Maltego, Kali Linux, and Parrot OS.</dd></div>
-          <div><dt>03 / AI &amp; vision</dt><dd>PyTorch, tensors, CNNs, embeddings, CUDA, MDPs, Hugging Face Transformers, llama.cpp, and OpenCV.</dd></div>
-          <div><dt>04 / Reverse engineering</dt><dd>Ghidra, Binary Ninja, QEMU emulation, and practical cryptography with RSA, AES, hashing, and modular arithmetic.</dd></div>
-          <div><dt>05 / Hardware &amp; RF</dt><dd>Arduino, UART, and RTL-SDR experimentation.</dd></div>
+          <div><dt>Languages</dt><dd class="skill-chips"><span>Python</span><span>C++</span><span>JavaScript</span><span>TypeScript</span><span>Rust</span><span>Nim</span><span>Bash</span></dd></div>
+          <div><dt>Security research</dt><dd class="skill-chips"><span>Reconnaissance</span><span>OWASP testing</span><span>Burp Suite</span><span>Nmap</span><span>tcpdump</span><span>Netcat</span><span>Maltego</span><span>Kali Linux</span><span>Parrot OS</span></dd></div>
+          <div><dt>AI &amp; vision</dt><dd class="skill-chips"><span>PyTorch</span><span>Tensors</span><span>CNNs</span><span>Embeddings</span><span>CUDA</span><span>MDPs</span><span>Hugging Face</span><span>llama.cpp</span><span>OpenCV</span></dd></div>
+          <div><dt>Reverse engineering</dt><dd class="skill-chips"><span>Ghidra</span><span>Binary Ninja</span><span>QEMU emulation</span><span>RSA</span><span>AES</span><span>Hashing</span><span>Modular arithmetic</span></dd></div>
+          <div><dt>Hardware &amp; RF</dt><dd class="skill-chips"><span>Arduino</span><span>UART</span><span>RTL-SDR</span><span>Experimentation</span></dd></div>
         </dl>
         <div class="about-profile-links"><a href="https://github.com/Quantapixel" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a><a href="mailto:js.pentesting@proton.me">Get in touch <span aria-hidden="true">↗</span></a></div>
       </div>
@@ -58,7 +88,7 @@
           <p class="experience-description">Addressed page enumeration, SSRF, advanced XSS, clickjacking risks, and vulnerabilities in DDoS/DoS mitigation.</p>
         </article>
       </div>
-      <footer class="scroll-footer"><span>JASKARAN SINGH <span class="footer-alias">/ QUANTAPIXEL</span></span><div><a href="https://github.com/Quantapixel">GitHub ↗</a><a href="https://www.linkedin.com/in/jaskaran0/">LinkedIn ↗</a><a href="https://huggingface.co/quantapixel">Hugging Face ↗</a><a href="mailto:js.pentesting@proton.me">Email ↗</a></div><span>VIT VELLORE · INDIA</span></footer>
+      <footer class="scroll-footer"><span>JASKARAN SINGH <span class="footer-alias">/ QUANTAPIXEL</span></span><p class="author-bio">Jaskaran Singh · CS student, security researcher, and AI builder.</p><div><a href="https://github.com/Quantapixel">GitHub ↗</a><a href="https://www.linkedin.com/in/jaskaran0/">LinkedIn ↗</a><a href="https://huggingface.co/quantapixel">Hugging Face ↗</a><a href="mailto:js.pentesting@proton.me">Email ↗</a></div><span>VIT VELLORE · INDIA</span></footer>
     </section>
   </main>
 </body>

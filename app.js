@@ -26,20 +26,6 @@ function setMeta(selector, value) {
   if (meta) meta.setAttribute('content', value);
 }
 
-function renderBreadcrumbs({ isDetail, isIndex, section, project }) {
-  const breadcrumbs = document.getElementById('breadcrumbs');
-  if (!breadcrumbs) return;
-  const home = '<a href="/">Home</a>';
-  const items = isDetail
-    ? [home, '<a href="/projects">Projects</a>', `<span aria-current="page">${project.name}</span>`]
-    : isIndex
-      ? [home, '<span aria-current="page">Projects</span>']
-      : section === 'about'
-        ? [home, '<span aria-current="page">About</span>']
-        : ['<span aria-current="page">Home</span>'];
-  breadcrumbs.innerHTML = `<ol>${items.map(item => `<li>${item}</li>`).join('')}</ol>`;
-}
-
 function playHomeIntro() {
   const home = document.getElementById('home');
   clearTimeout(homeIntroTimer);
@@ -95,7 +81,6 @@ function renderRoute({ scroll = false, restoreY } = {}) {
   setMeta('meta[property="og:title"]', document.title);
   setMeta('meta[property="og:description"]', document.querySelector('meta[name="description"]')?.getAttribute('content') || '');
   setMeta('meta[property="og:url"]', document.querySelector('link[rel="canonical"]')?.getAttribute('href') || '');
-  renderBreadcrumbs({ isDetail, isIndex, section, project });
   setHeadingTag('hero-name', !isDetail && !isIndex && section === 'home' ? 'h1' : 'h2');
   setHeadingTag('work-title', isIndex ? 'h1' : 'h2');
   setHeadingTag('about-title', !isDetail && !isIndex && section === 'about' ? 'h1' : 'h2');

@@ -32,13 +32,6 @@ a:focus-visible, button:focus-visible, canvas:focus-visible { outline: 2px solid
 .skip-link { position: fixed; top: -100px; left: 20px; z-index: 50; background: var(--gold); color: var(--bg); padding: 10px; }
 .skip-link:focus { top: 10px; }
 #main:focus { outline: none; }
-.breadcrumbs { display: flex; align-items: center; margin: 14px var(--gutter) 0; font: 9px var(--mono); letter-spacing: .05em; color: var(--t4); }
-.breadcrumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; list-style: none; }
-.breadcrumbs li { display: flex; align-items: center; gap: 8px; }
-.breadcrumbs li + li::before { content: '/'; color: #4b4030; }
-.breadcrumbs a { color: var(--t3); }
-.breadcrumbs a:hover { color: var(--gold); }
-.breadcrumbs [aria-current="page"] { color: var(--gold); }
 .site-header { display: flex; align-items: center; justify-content: space-between; min-height: 104px; margin: 0 var(--gutter); border-bottom: 1px solid var(--border2); gap: 30px; }
 .brand { display: flex; align-items: center; gap: 20px; }
 .brand-mark { font-family: var(--serif); font-size: 38px; font-weight: 300; font-style: italic; letter-spacing: -7px; padding-right: 6px; color: var(--gold); line-height: 1; }

@@ -1,339 +1,192 @@
-// ========================
-// CONFIG
-// ========================
-const CITY = "New Delhi";
-const GITHUB_USERNAME = "quantapixel";
+const sections = [...document.querySelectorAll('.scroll-section')];
+const detail = document.getElementById('project-detail');
+const detailTitle = document.getElementById('detail-title');
+const workIndex = document.getElementById('work-index');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const titles = { home: 'Jaskaran Singh — Computer Science & Security', work: 'Work — Jaskaran Singh', about: 'About — Jaskaran Singh' };
+let homeIntroTimer;
+let currentView;
+history.scrollRestoration = 'manual';
 
-// ========================
-// PROJECTS DATA
-// Add your projects here.
-// `content` is full HTML — write as much as you want.
-// ========================
-const PROJECTS = [
-  
-  {
-    id: "cicadadetroit",
-    name: "Cicada Detroit",
-    desc: "Bug bounty for a game website",
-    date: "2026-05",
-    category: "web-hacking",
-    tags: ["javascript", "bug-bounty"],
-    lede: "addressed page enumeration, SSRF, advanced XSS, clickjacking risks and DDoS/DoS mitigation vulnerabilities",
-    content: `
-      <p>This was the second time ever I've done freelance bug bounty and first time I've done it for money. 
-      Around end of 2025 when I was supposed to study for my JEE exam I got the opportunity to work bug bounty for this 
-      cicada styled game show. Over the period of a month I exploited and corrected 7+ bugs/exploits and made site airtight 
-      and hacker-proof while making 3000+$ this shit shifted my focus from ethical hacking, rf experimentation, 
-      osint investigation and ai assisted sec analysis to bug bounty, ctfs(crypto, web exp, pwn, rev eng, foren, game) and kid
-      you not I particapted in 10+ hackathons/ctfs(won 2 hackathons, 3 ctfs) for the next 3 month till jan start which gravely 
-      affected my JEE score and led me to make the unfortunate choice to join the college which was my last option.</p>
+function playHomeIntro() {
+  const home = document.getElementById('home');
+  clearTimeout(homeIntroTimer);
+  home.classList.remove('home-entering');
+  void home.offsetWidth;
+  requestAnimationFrame(() => home.classList.add('home-entering'));
+  homeIntroTimer = setTimeout(() => home.classList.remove('home-entering'), 1500);
+}
+function currentSection() {
+  if (location.hash === '#about' || /^\/about(?:\.html)?\/?$/.test(location.pathname)) return 'about';
+  return 'home';
+}
+function markNavigation(active) {
+  document.querySelectorAll('[data-scroll], [data-work]').forEach(link => {
+    if ((link.hasAttribute('data-work') ? 'work' : link.dataset.scroll) === active) link.setAttribute('aria-current', 'location');
+    else link.removeAttribute('aria-current');
+  });
+}
+function renderRoute({ scroll = false, restoreY } = {}) {
+  // Preserve old bookmarked links to the former scrolling Work section.
+  if (['#work', '#projects'].includes(location.hash)) history.replaceState(history.state, '', '/projects' + location.search);
+  const projectId = new URLSearchParams(location.search).get('project');
+  const project = PROJECTS.find(item => item.id === projectId);
+  const isDetail = Boolean(project);
+  const isIndex = !isDetail && /^\/projects(?:\.html)?\/?$/.test(location.pathname);
+  const previousView = currentView;
+  currentView = isDetail ? 'detail' : isIndex ? 'work' : 'home';
+  sections.forEach(section => { section.hidden = isDetail || isIndex; });
+  detail.hidden = !isDetail;
+  workIndex.hidden = !isIndex;
+  const section = currentSection();
 
-      <h2>Exploit</h2>
-      <p>The puzzle owner allowed me to release the writeup for one of the more critical ongoing(then) vulnerabilities 
-      I patched:-<br><a href="files/cicadadetroit-exploit.pdf" target="_blank" rel="noopener noreferrer">exploit pdf</a> </p>
-    
-      <h2>Acknoledgment</h2>
-      <p>The owner also made this acknoledgement page for me(well technically I told him to add it):-
-      <br> <a href="https://www.cicadadetroit.com/thankyousandacknowledgements" target="_blank" rel="noopener noreferrer">
-      Link</a></p>
-`    
+  if (isDetail) {
+    document.getElementById('detail-kind').textContent = `${project.kind} · ${project.date}`;
+    detailTitle.textContent = project.name;
+    document.getElementById('detail-lede').textContent = project.lede;
+    document.getElementById('detail-tags').replaceChildren(...project.tags.map(tag => {
+      const chip = document.createElement('span'); chip.textContent = tag; return chip;
+    }));
+    document.getElementById('detail-content').innerHTML = project.content;
+    document.querySelectorAll('.detail-content > *').forEach(element => element.classList.add('reveal'));
+    const back = document.querySelector('[data-close-detail]');
+    back.href = history.state?.returnTo || '/projects';
+    back.textContent = /^\/(?:#home)?$/.test(history.state?.returnTo || '') ? '← back to featured' : '← all work';
+    document.title = `${project.name} — Jaskaran Singh`;
+  } else {
+    document.title = isIndex ? titles.work : titles[section];
+    if (!isIndex && section === 'home' && (scroll || previousView !== 'home')) playHomeIntro();
   }
-];
-
-// ========================
-// PAGES
-// ========================
-const PAGES = {
-  home:           document.getElementById("page-home"),
-  projects:       document.getElementById("page-projects"),
-  projectArticle: document.getElementById("page-project-article"),
-  about:          document.getElementById("page-about"),
-};
-
-function showPage(name) {
-  Object.values(PAGES).forEach(p => {
-    p.classList.remove("active");
-    p.classList.add("hidden");
-  });
-  PAGES[name].classList.remove("hidden");
-  PAGES[name].classList.add("active");
-  window.scrollTo(0, 0);
-}
-
-window.showPage = showPage;
-
-// ========================
-// NAV
-// ========================
-document.getElementById("hdr-name").addEventListener("click", () => showPage("home"));
-
-// ========================
-// RENDER PROJECTS GRID
-// ========================
-function renderProjects() {
-  const grid = document.getElementById("projects-grid");
-  grid.innerHTML = "";
-
-  PROJECTS.forEach(proj => {
-    const card = document.createElement("div");
-    card.className = "proj-card";
-    card.innerHTML = `
-      <div>
-        <div class="proj-name">${proj.name}</div>
-        <div class="proj-desc">${proj.desc}</div>
-        <div class="proj-tags">
-          ${proj.tags.map(t => `<span class="proj-tag">${t}</span>`).join("")}
-        </div>
-      </div>
-      <div style="font-size:10px;color:var(--t4);flex-shrink:0">${proj.date}</div>
-    `;
-    card.addEventListener("click", () => openProjectArticle(proj.id));
-    grid.appendChild(card);
+  document.querySelector('link[rel="canonical"]').href = `https://jaskaran.xyz${isDetail ? `/projects?project=${project.id}` : isIndex ? '/projects' : section === 'about' ? '/about' : '/'}`;
+  markNavigation(isDetail || isIndex ? 'work' : section);
+  document.dispatchEvent(new Event('portfolio:route'));
+  requestAnimationFrame(() => {
+    observeReveals();
+    if (typeof restoreY === 'number') {
+      window.scrollTo({ top: restoreY, behavior: 'instant' });
+    } else if (scroll || (!isDetail && !isIndex && section === 'about')) {
+      const target = document.getElementById(section);
+      const top = isDetail || isIndex ? 0 : target.getBoundingClientRect().top + window.scrollY - document.querySelector('.site-header').offsetHeight;
+      window.scrollTo({ top: Math.max(0, top), behavior: previousView === 'home' && currentView === 'home' && !reducedMotion.matches ? 'smooth' : 'instant' });
+    }
+    if (scroll && previousView !== currentView) document.getElementById('main').focus({ preventScroll: true });
   });
 }
-
-// ========================
-// OPEN PROJECT ARTICLE
-// ========================
-function openProjectArticle(id) {
-  const proj = PROJECTS.find(p => p.id === id);
-  if (!proj) return;
-
-  document.getElementById("proj-art-cat").textContent = proj.category;
-  document.getElementById("proj-art-date").textContent = proj.date;
-  document.getElementById("proj-art-title").textContent = proj.name;
-  document.getElementById("proj-art-lede").textContent = proj.lede;
-  document.getElementById("proj-art-tags").innerHTML = proj.tags.map(t => `<span class="tag">${t}</span>`).join("");
-  document.getElementById("proj-art-body").innerHTML = proj.content;
-  document.getElementById("proj-art-back").onclick = () => showPage("projects");
-
-  showPage("projectArticle");
+function navigate(url, { returnTo, returnY, restoreY } = {}) {
+  history.replaceState({ ...history.state, scrollY: window.scrollY }, '', location.href);
+  history.pushState({ returnTo, returnY }, '', url);
+  renderRoute({ scroll: true, restoreY });
 }
 
-// ========================
-// WEATHER
-// ========================
-async function loadWeather() {
-  try {
-    const res = await fetch(`https://wttr.in/${CITY}?format=j1`);
-    const data = await res.json();
-    const current = data.current_condition[0];
-    const temp = current.temp_C;
-    const desc = current.weatherDesc[0].value;
-    document.getElementById("weather-val").textContent = `${temp}°C · ${desc}`;
-  } catch (err) {
-    console.error(err);
-    document.getElementById("weather-val").textContent = "weather unavailable";
-  }
-}
-
-// ========================
-// LOCAL TIME
-// ========================
-function updateLocalTime() {
-  const now = new Date();
-  const formatted = now.toLocaleTimeString("en-IN", {
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-  document.getElementById("local-time-val").textContent = formatted;
-}
-
-// ========================
-// GITHUB CONTRIBUTIONS HEATMAP
-// ========================
-async function loadGithubActivity() {
-  const wrap = document.getElementById("github-strip");
-  wrap.innerHTML = '<div class="gh-loading">fetching contributions...</div>';
-
-  try {
-    const [contribRes, eventsRes] = await Promise.all([
-      fetch(`https://github-contributions-api.jogruber.de/v4/${GITHUB_USERNAME}?y=last`),
-      fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events?per_page=100`)
-    ]);
-    const { contributions: allContribs } = await contribRes.json();
-
-    // Keep only last 8 months
-    const cutoff = new Date();
-    cutoff.setMonth(cutoff.getMonth() - 8);
-    const contributions = allContribs.filter(d => new Date(d.date) >= cutoff);
-    const events = await eventsRes.json();
-
-    // Build a map of date → [event descriptions]
-    const eventMap = {};
-    events.forEach(e => {
-      const d = e.created_at.slice(0, 10);
-      if (!eventMap[d]) eventMap[d] = [];
-      const desc = formatEvent(e);
-      if (desc) eventMap[d].push(desc);
+document.addEventListener('click', event => {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  const link = event.target.closest('a');
+  if (!link || link.target === '_blank' || link.hasAttribute('download')) return;
+  if (link.matches('[data-scroll]')) {
+    event.preventDefault(); navigate(`/#${link.dataset.scroll}`);
+  } else if (link.matches('[data-work]')) {
+    event.preventDefault(); navigate('/projects');
+  } else if (link.matches('[data-project]')) {
+    event.preventDefault();
+    navigate(`/projects?project=${encodeURIComponent(link.dataset.project)}`, {
+      returnTo: location.pathname + location.search + location.hash, returnY: window.scrollY
     });
-
-    // Pad front so first cell is Sunday (day 0)
-    const firstDay = new Date(contributions[0].date).getUTCDay();
-    const padded = [...Array(firstDay).fill(null), ...contributions];
-
-    // Build month labels (one per column where month changes)
-    const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    const monthLabels = []; // { col, label }
-    let lastMonth = -1;
-    for (let i = 0; i < padded.length; i++) {
-      const col = Math.floor(i / 7);
-      if (padded[i]) {
-        const m = new Date(padded[i].date).getUTCMonth();
-        if (m !== lastMonth) { monthLabels.push({ col, label: MONTHS[m] }); lastMonth = m; }
-      }
-    }
-    const totalCols = Math.ceil(padded.length / 7);
-
-    // Tooltip element
-    let tip = document.getElementById("gh-tip");
-    if (!tip) {
-      tip = document.createElement("div");
-      tip.id = "gh-tip";
-      tip.className = "gh-tip";
-      document.body.appendChild(tip);
-    }
-
-    // Render
-    wrap.innerHTML = "";
-    wrap.style.cssText = "";
-
-    const cellSize = `min(13px, calc((100% - ${(totalCols - 1) * 3}px) / ${totalCols}))`;
-
-    // Month label row — fixed 13px cols matching grid
-    const labelRow = document.createElement("div");
-    labelRow.className = "gh-months";
-    labelRow.style.cssText = `display:grid;grid-template-columns:repeat(${totalCols},min(13px,calc((100% - ${(totalCols-1)*3}px)/${totalCols})));gap:3px;margin-bottom:4px;overflow:visible;`;
-    for (let c = 0; c < totalCols; c++) {
-      const span = document.createElement("span");
-      const lbl = monthLabels.find(m => m.col === c);
-      if (lbl) {
-        span.textContent = lbl.label;
-        span.style.cssText = "font-size:9px;color:var(--t4);white-space:nowrap;position:relative;";
-      }
-      labelRow.appendChild(span);
-    }
-    wrap.appendChild(labelRow);
-
-    // Grid
-    const grid = document.createElement("div");
-    grid.className = "gh-grid";
-    grid.style.cssText = `display:grid;grid-template-rows:repeat(7,13px);grid-template-columns:repeat(${totalCols},${cellSize});grid-auto-flow:column;gap:3px;`;
-
-    padded.forEach((day, i) => {
-      const cell = document.createElement("div");
-      if (!day) {
-        cell.className = "gh-day gh-empty";
-      } else {
-        cell.className = `gh-day${day.level > 0 ? ` l${Math.min(day.level, 4)}` : ""}`;
-        cell.addEventListener("click", e => {
-          const evs = eventMap[day.date] || [];
-          const lines = evs.length
-            ? evs.slice(0, 5).join("<br>") + (evs.length > 5 ? `<br><span style="color:var(--t4)">+${evs.length - 5} more</span>` : "")
-            : "No recorded events";
-          tip.innerHTML = `<div class="gh-tip-date">${day.date}</div><div class="gh-tip-count">${day.count} contribution${day.count !== 1 ? "s" : ""}</div>${evs.length ? `<div class="gh-tip-evs">${lines}</div>` : ""}`;
-          tip.style.display = "block";
-          const r = cell.getBoundingClientRect();
-          const tx = Math.min(r.left, window.innerWidth - 272);
-          const ty = r.top - tip.offsetHeight - 8;
-          tip.style.left = (tx < 8 ? 8 : tx) + "px";
-          tip.style.top = (ty < 8 ? r.bottom + 8 : ty) + "px";
-          e.stopPropagation();
-        });
-      }
-      grid.appendChild(cell);
-    });
-
-    wrap.appendChild(grid);
-    document.addEventListener("click", () => { tip.style.display = "none"; }, { once: false });
-
-  } catch (err) {
-    console.error(err);
-    wrap.innerHTML = '<div class="gh-loading">contributions unavailable</div>';
+  } else if (link.matches('[data-close-detail]')) {
+    event.preventDefault();
+    navigate(link.getAttribute('href'), { restoreY: history.state?.returnY });
   }
-}
+});
+window.addEventListener('popstate', () => renderRoute({ scroll: true, restoreY: history.state?.scrollY }));
 
-function formatEvent(e) {
-  const repo = e.repo.name.split("/")[1];
-  switch (e.type) {
-    case "PushEvent":      return `pushed to ${repo}`;
-    case "CreateEvent":    return `created ${e.payload.ref_type} in ${repo}`;
-    case "PullRequestEvent": return `${e.payload.action} PR in ${repo}`;
-    case "IssuesEvent":    return `${e.payload.action} issue in ${repo}`;
-    case "ForkEvent":      return `forked ${repo}`;
-    case "WatchEvent":     return `starred ${repo}`;
-    case "IssueCommentEvent": return `commented in ${repo}`;
-    case "DeleteEvent":    return `deleted ${e.payload.ref_type} in ${repo}`;
-    default:               return null;
+function createCard(project, index, featured = false) {
+  const card = document.createElement('a');
+  card.className = featured ? 'featured-entry' : 'project-card reveal';
+  card.href = `/projects?project=${encodeURIComponent(project.id)}`;
+  card.dataset.project = project.id;
+  const copy = document.createElement('span'); copy.className = featured ? 'featured-entry-copy' : 'project-card-copy';
+  const kind = document.createElement('span'); kind.className = 'eyebrow'; kind.textContent = project.kind;
+  const name = document.createElement('span'); name.className = featured ? 'featured-entry-title' : 'project-card-title'; name.textContent = project.name;
+  const description = document.createElement('span'); description.className = featured ? 'featured-entry-description' : 'project-card-description'; description.textContent = project.desc;
+  copy.append(kind, name, description);
+  if (featured) {
+    card.append(copy);
+  } else {
+    const arrow = document.createElement('span'); arrow.className = 'project-card-arrow'; arrow.setAttribute('aria-hidden', 'true'); arrow.textContent = '↗';
+    const number = document.createElement('span'); number.className = 'project-number'; number.textContent = `0${index + 1}`;
+    const tags = document.createElement('span'); tags.className = 'detail-tags';
+    project.tags.forEach(tag => { const chip = document.createElement('span'); chip.textContent = tag; tags.append(chip); });
+    copy.append(tags);
+    const cardEnd = document.createElement('span'); cardEnd.className = 'project-card-end';
+    const action = document.createElement('span'); action.className = 'project-card-action'; action.textContent = 'open case';
+    cardEnd.append(action, arrow);
+    card.append(number, copy, cardEnd);
   }
+  return card;
 }
-
-// ========================
-// GITHUB STATS
-// ========================
-async function loadGithubStats() {
-  try {
-    const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`);
-    const user = await res.json();
-    document.getElementById("gh-stats").innerHTML = `
-      <span>${user.public_repos} repos</span>
-      <span> · </span>
-      <span>${user.followers} followers</span>
-      <span> · </span>
-      <span>${user.following} following</span>
-    `;
-  } catch (err) {
-    console.error(err);
-  }
+PROJECTS.forEach((project, index) => document.getElementById('projects-grid').append(createCard(project, index)));
+PROJECTS.filter(project => project.featured).slice(0, 2).forEach((project, index) => document.getElementById('featured-grid').append(createCard(project, index, true)));
+function renderContributionChart() {
+  const grid = document.getElementById('contribution-grid');
+  if (!grid) return;
+  const today = new Date();
+  today.setHours(12, 0, 0, 0);
+  const end = new Date(today);
+  const day = end.getDay();
+  end.setDate(end.getDate() + (6 - day));
+  const start = new Date(end);
+  start.setDate(start.getDate() - (52 * 7 - 1));
+  const dates = [];
+  for (let cursor = new Date(start); cursor <= end; cursor.setDate(cursor.getDate() + 1)) dates.push(new Date(cursor));
+  const months = document.querySelector('.contribution-months');
+  months.replaceChildren();
+  let previousMonth = -1;
+  dates.forEach((date, index) => {
+    if (index % 7 !== 0) return;
+    if (date.getMonth() === previousMonth) return;
+    previousMonth = date.getMonth();
+    const week = index / 7;
+    if (week > 49) return;
+    const label = document.createElement('span');
+    label.textContent = date.toLocaleDateString('en', { month: 'short' });
+    label.style.gridColumn = `${week + 1} / span 3`;
+    months.append(label);
+  });
+  const fallback = date => ({ date: date.toISOString().slice(0, 10), count: 0, level: 0 });
+  const paint = contributions => {
+    const byDate = new Map(contributions.map(item => [item.date, item]));
+    grid.replaceChildren(...dates.map(date => {
+      const item = byDate.get(date.toISOString().slice(0, 10)) || fallback(date);
+      const cell = document.createElement('span');
+      const level = Math.max(0, Math.min(4, Number(item.level) || 0));
+      cell.className = `contribution-cell level-${level}`;
+      cell.title = `${item.count || 0} contribution${item.count === 1 ? '' : 's'} · ${item.date}`;
+      cell.setAttribute('aria-label', cell.title);
+      return cell;
+    }));
+  };
+  paint([]);
+  fetch('https://github-contributions-api.jogruber.de/v4/Quantapixel?y=last', { mode: 'cors' })
+    .then(response => response.ok ? response.json() : Promise.reject(new Error('GitHub activity unavailable')))
+    .then(data => paint(Array.isArray(data.contributions) ? data.contributions : []))
+    .catch(() => {});
 }
+renderContributionChart();
+document.querySelectorAll('.hero-copy, .scene, .section-heading, .about-intro, .about-github, .about-experience, .highlight').forEach(element => element.classList.add('reveal'));
 
-// ========================
-// LATEST PROJECT
-// ========================
-async function loadLatestProject() {
-  try {
-    const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated`);
-    const repos = await res.json();
-    const latest = repos[0];
-    document.getElementById("s-building").innerHTML = `<span class="dot-live"></span> ${latest.name}`;
-  } catch (err) {
-    console.error(err);
-  }
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add('is-visible');
+    revealObserver.unobserve(entry.target);
+  });
+}, { threshold: .12, rootMargin: '0px 0px -35px 0px' });
+function observeReveals() {
+  document.querySelectorAll('.reveal:not(.is-visible)').forEach(element => revealObserver.observe(element));
 }
-
-// ========================
-// SPOTIFY
-// ========================
-async function loadSpotify() {
-  try {
-    const res = await fetch("/api/spotify");
-    const data = await res.json();
-    if (data.isPlaying) {
-      document.getElementById("spotify-music-icon").style.display = "inline";
-      document.getElementById("spotify-val").textContent = `${data.title} — ${data.artist}`;
-    } else {
-      document.getElementById("spotify-music-icon").style.display = "none";
-      document.getElementById("spotify-val").textContent = "not playing";
-    }
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-// ========================
-// INIT
-// ========================
-renderProjects();
-loadWeather();
-updateLocalTime();
-loadGithubActivity();
-loadGithubStats();
-loadLatestProject();
-loadSpotify();
-
-// ========================
-// AUTO REFRESH
-// ========================
-setInterval(updateLocalTime, 1000);
-setInterval(loadWeather, 600000);
-setInterval(loadSpotify, 15000);
+const sectionObserver = new IntersectionObserver(entries => {
+  if (currentView !== 'home') return;
+  const mostVisible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio-a.intersectionRatio)[0];
+  if (mostVisible) markNavigation(mostVisible.target.id);
+}, { threshold: [0.2, .45, .7] });
+sections.forEach(section => sectionObserver.observe(section));
+renderRoute();

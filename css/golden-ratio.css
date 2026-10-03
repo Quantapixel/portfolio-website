@@ -1,0 +1,81 @@
+/* Full-page golden-ratio background replaces the hero sculpture. */
+.golden-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  filter: blur(2px);
+  transform: scale(1.03);
+  opacity: .94;
+}
+
+.golden-bg-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.golden-bg-fill {
+  fill: #080808;
+}
+
+.golden-bg-rect {
+  fill: none;
+  stroke: #b9b9b9;
+  stroke-width: 1.2;
+  opacity: .48;
+}
+
+.golden-bg-rect-inner {
+  stroke: #7f7f7f;
+  stroke-width: .9;
+  opacity: .32;
+}
+
+.golden-bg-lines {
+  stroke: #d8d8d8;
+  stroke-width: .7;
+  stroke-linecap: round;
+  opacity: .24;
+}
+
+.golden-bg-spiral {
+  fill: none;
+  stroke: #efefef;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  opacity: .46;
+  filter: drop-shadow(0 0 9px rgba(255, 255, 255, .12));
+}
+
+.golden-bg-node {
+  fill: #efefef;
+  opacity: .75;
+}
+
+.golden-bg-node-small {
+  fill: #b9b9b9;
+}
+
+.site-header,
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* Let the background fill the hero instead of reserving a sculpture column. */
+#home .hero {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 1280px;
+}
+
+#home .hero-copy {
+  max-width: 680px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .golden-bg-spiral {
+    filter: none;
+  }
+}

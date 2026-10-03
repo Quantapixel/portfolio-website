@@ -57,6 +57,7 @@ function renderRoute({ scroll = false, restoreY } = {}) {
   detail.hidden = !isDetail;
   workIndex.hidden = !isIndex;
   const section = currentSection();
+  document.querySelector('.golden-bg').hidden = isDetail || isIndex;
 
   if (isDetail) {
     document.getElementById('detail-kind').textContent = `${project.kind} · ${project.date}`;

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="130 -242 1650 1040" fill="none">
   <!--
     True golden logarithmic spiral: phi = (1 + sqrt(5)) / 2.
     P(t) = C + r0 * exp(-2 * ln(phi) * t / pi) *
@@ -236,22 +236,7 @@
           C 1312.12551 499.76383 1312.13386 499.77257 1312.14146 499.78163
           C 1312.14907 499.79068 1312.15593 499.80005 1312.16205 499.80963"/>
   </defs>
-  <rect width="1600" height="1000" fill="url(#light)"/>
-  <!-- Construction circles share the pole; successive radii differ by phi. -->
-  <g stroke="#b7c0cc" stroke-width=".7" stroke-opacity=".09">
-    <circle cx="1312" cy="500" r="400"/>
-    <circle cx="1312" cy="500" r="647.2135955" stroke-dasharray="2 9"/>
-    <circle cx="1312" cy="500" r="1047.2135955"/>
-  </g>
-  <g stroke="#b7c0cc" stroke-width=".7" stroke-opacity=".18">
-    <path d="M 180 180 H 380 M 180 176 V 184 M 380 176 V 184"/>
-    <path d="M 180 850 H 303.6068 M 180 846 V 854 M 303.6068 846 V 854"/>
-    <path d="M 946 150 H 970 M 958 138 V 162 M 790 830 H 814 M 802 818 V 842"/>
-  </g>
-  <g fill="#bbc4d0" fill-opacity=".3" font-family="monospace" font-size="9" letter-spacing="1.5">
-    <text x="180" y="165">φ = 1.6180339887…</text>
-    <text x="180" y="876">r(θ + π/2) = r(θ) / φ</text>
-  </g>
+  <rect x="154.22912" y="-215.54175" width="1600" height="988.85438" fill="url(#light)"/>
   <g stroke="#b7c0cc" stroke-opacity=".14" stroke-width=".8">
     <rect x="154.22912" y="-215.54175" width="1600" height="988.85438"/>
     <path d="M 1143.08351 -215.54175 L 1143.08351 773.31263"/>

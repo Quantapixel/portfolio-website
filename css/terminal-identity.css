@@ -141,7 +141,7 @@ nav a:hover, .header-contact:hover { border-color: var(--gold); color: var(--gol
 @media (max-width: 700px) { }
 /* Three connected scroll sections: home, selected work, and about/contact. */
 html { scroll-behavior: smooth; scroll-padding-top: 82px; }
-.site-header { position: sticky; top: 0; z-index: 100; min-height: 76px; background: rgba(8,8,8,.94); backdrop-filter: blur(12px); }
+.site-header { position: sticky; top: 0; z-index: 100; min-height: 76px; margin: 0; padding-inline: var(--gutter); background: rgba(8,8,8,.94); backdrop-filter: blur(12px); }
 .scroll-section { position: relative; scroll-margin-top: 76px; min-height: calc(100svh - 76px); }
 #home .hero { min-height: calc(100svh - 76px); grid-template-columns: 1fr 1.1fr; padding: 20px var(--gutter, 5vw); align-items: center; }
 #home .hero-copy { padding: 0 0 0 4vw; }

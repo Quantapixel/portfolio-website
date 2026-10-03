@@ -29,13 +29,17 @@
   mask-image: radial-gradient(ellipse at 35% 50%, #0003, #000 85%);
 }
 
-/* Uniform scaling preserves phi; the shared spiral/grid pole stays at right. */
+/* Fit the entire golden rectangle inside the home screen, below the header. */
 .golden-bg {
+  --spiral-header-height: 76px;
+  --spiral-gap: clamp(24px, 3svh, 40px);
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  filter: blur(var(--spiral-blur, 0px));
+  opacity: calc(var(--spiral-base-opacity, 1) * var(--spiral-strength, 1));
   /* Keep the geometry quiet behind the introduction and clear on the right. */
   mask-image: linear-gradient(90deg, #0006, #0005 42%, #000 68%);
 }
@@ -43,13 +47,25 @@
 .golden-bg-art {
   display: block;
   position: absolute;
-  left: 82%;
-  top: 52%;
-  width: max(100vw, 160svh);
+  left: 50%;
+  top: calc(50% + var(--spiral-header-height) / 2);
+  width: min(
+    calc(100% - 2 * var(--gutter)),
+    calc((100svh - var(--spiral-header-height) - 2 * var(--spiral-gap)) * 1650 / 1040)
+  );
   max-width: none;
   height: auto;
-  /* The SVG pole is (1312, 500) in a 1600 by 1000 viewBox. */
-  transform: translate(-82%, -50%);
+  /* Pole (1312, 500) inside the padded SVG viewBox (130, -242, 1650, 1040). */
+  transform-origin: 71.636364% 71.346154%;
+  transform: translate(-50%, -50%) scale(var(--spiral-zoom, 1));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .golden-bg-art { will-change: transform; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .golden-bg-art { transform: translate(-50%, -50%); }
 }
 
 /* The header keeps its existing sticky positioning and higher stacking level. */
@@ -71,7 +87,8 @@ main {
 @media (max-width: 700px) {
   .geometry-field { opacity: .6; }
   .golden-bg {
-    opacity: .48;
+    --spiral-header-height: 70px;
+    --spiral-base-opacity: .48;
     mask-image: linear-gradient(90deg, #0001, #0008 65%, #000);
   }
 }

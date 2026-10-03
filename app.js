@@ -2,11 +2,11 @@ const sections = [...document.querySelectorAll('.scroll-section')];
 const detail = document.getElementById('project-detail');
 const workIndex = document.getElementById('work-index');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-const titles = { home: 'Home', work: 'Projects', about: 'About' };
+const titles = { home: 'Jaskaran Singh — Computer Science Student at VIT Vellore', work: 'Projects — Jaskaran Singh | VIT Vellore', about: 'About Jaskaran Singh — VIT Vellore' };
 const descriptions = {
-  home: 'Jaskaran Singh, computer science student at VIT Vellore. Exploring AI, security, and the systems behind them.',
-  work: 'Selected projects and security research by Jaskaran Singh.',
-  about: 'About Jaskaran Singh: computer science student, AI engineer in the making, founder, and security researcher.'
+  home: 'Jaskaran Singh is a computer science student at Vellore Institute of Technology (VIT), Vellore, focused on AI, security, and systems.',
+  work: 'Selected projects and security research by Jaskaran Singh, VIT Vellore.',
+  about: 'Jaskaran Singh is a computer science student at Vellore Institute of Technology (VIT), Vellore. AI engineer in the making, founder, and security researcher.'
 };
 let homeIntroTimer;
 let currentView;

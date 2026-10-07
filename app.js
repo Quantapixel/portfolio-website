@@ -6,7 +6,7 @@ const titles = { home: 'Jaskaran Singh — Computer Science Student at VIT Vello
 const descriptions = {
   home: 'Jaskaran Singh is a computer science student at Vellore Institute of Technology (VIT), Vellore, focused on AI, security, and systems.',
   work: 'Selected projects and security research by Jaskaran Singh, VIT Vellore.',
-  about: 'Jaskaran Singh is a computer science student at Vellore Institute of Technology (VIT), Vellore. AI engineer in the making, founder, and security researcher.'
+  about: 'Jaskaran Singh is a computer science student at Vellore Institute of Technology (VIT), Vellore. AI researcher, builder, and CTF player.'
 };
 let homeIntroTimer;
 let currentView;

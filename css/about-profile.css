@@ -1,11 +1,14 @@
 /* Profile details supplied by Jaskaran from his LinkedIn profile. */
 .about-section { column-gap: clamp(45px, 7vw, 110px); padding-bottom: 28px; }
 .about-intro { max-width: 520px; }
-.about-expanded { min-height: calc(100svh - 76px); padding-top: clamp(60px, 9vh, 110px); }
-.about-expanded .about-intro { max-width: 610px; }
-.about-expanded .about-intro h1 { font-size: clamp(46px, 5.2vw, 78px); line-height: 1.1; letter-spacing: -.045em; }
+.about-expanded { min-height: calc(100svh - 76px); padding-top: clamp(60px, 9vh, 110px); grid-template-columns: minmax(0, 1fr); align-content: start; }
+.about-expanded .about-intro { max-width: 760px; }
+.about-expanded .about-intro h1 { font-size: clamp(56px, 7vw, 108px); line-height: 1.05; letter-spacing: -.055em; }
 .about-expanded .about-intro h1 span { color: var(--gold); }
-.about-expanded .about-intro > p:not(.eyebrow) { max-width: 570px; }
+.about-expanded .about-intro > p:not(.eyebrow) { max-width: 640px; font-size: 14px; line-height: 1.9; }
+.about-expanded .about-intro > .about-experience-compact { margin-top: 42px; }
+.about-expanded .about-experience-compact .experience-heading h2 { margin: 0; font: 400 17px var(--mono); text-transform: uppercase; letter-spacing: .08em; color: #e2ddd2; }
+.skills-heading { margin-top: 46px; }
 .toolkit-label { margin-top: 30px; color: #bda779; font: 8px var(--mono); letter-spacing: .13em; }
 .about-expanded .toolkit-label { margin-top: 38px; color: var(--t1); font-family: var(--serif); font-weight: 300; font-size: clamp(28px, 3vw, 42px); line-height: 1.1; letter-spacing: -.02em; text-transform: none; }
 .about-toolkit { margin-top: 28px; border-top: 1px solid var(--border2); }

@@ -76,7 +76,7 @@ function renderRoute({ scroll = false, restoreY } = {}) {
   } else {
     document.title = isIndex ? titles.work : titles[section];
     setMeta('meta[name="description"]', isIndex ? descriptions.work : descriptions[section]);
-    if (!isIndex && section === 'home' && (scroll || previousView !== 'home')) playHomeIntro();
+    if (!isIndex && section === 'home' && (scroll || (previousView && previousView !== 'home'))) playHomeIntro();
   }
   document.querySelector('link[rel="canonical"]').href = `https://jaskaran.xyz${isDetail ? `/projects?project=${project.id}` : isIndex ? '/projects' : section === 'about' ? '/about' : '/'}`;
   setMeta('meta[property="og:title"]', document.title);
@@ -157,7 +157,9 @@ function createCard(project, index, featured = false) {
 const indexProjects = PROJECTS.filter(project => project.id === 'cicadadetroit');
 const projectCards = indexProjects.map((project, index) => createCard(project, index));
 projectCards.forEach(card => document.getElementById('projects-grid').append(card));
-PROJECTS.filter(project => project.featured).slice(0, 2).forEach((project, index) => document.getElementById('featured-grid').append(createCard(project, index, true)));
+const featuredGrid = document.getElementById('featured-grid');
+const featuredProjects = PROJECTS.filter(project => project.featured).slice(0, 2);
+featuredGrid.replaceChildren(...featuredProjects.map((project, index) => createCard(project, index, true)));
 
 const filterState = { category: 'all', tag: 'all' };
 function renderWorkFilters() {
@@ -292,7 +294,7 @@ function renderContributionChart() {
     .catch(() => {});
 }
 renderContributionChart();
-document.querySelectorAll('.hero-copy, .scene, .section-heading, .about-intro, .about-github, .about-experience, .highlight').forEach(element => element.classList.add('reveal'));
+document.querySelectorAll('.section-heading, .about-intro, .about-github, .about-experience, .highlight').forEach(element => element.classList.add('reveal'));
 
 const revealObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {

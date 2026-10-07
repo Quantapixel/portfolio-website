@@ -27,7 +27,7 @@
   <link rel="stylesheet" href="css/main.css?v=about-2" />
   <link rel="stylesheet" href="css/terminal-identity.css?v=scroll-story-8" />
   <link rel="stylesheet" href="css/golden-ratio.css?v=10" />
-  <link rel="stylesheet" href="css/about-profile.css?v=12" />
+  <link rel="stylesheet" href="css/about-profile.css?v=14" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -93,16 +93,36 @@
         </div>
         <div class="experience-heading skills-heading"><div><h2 id="skills-title">skills</h2></div></div>
         <dl class="about-toolkit">
-          <div><dt>Languages</dt><dd class="skill-chips"><span>Python</span><span>C++</span><span>JavaScript</span><span>TypeScript</span><span>Rust</span><span>Nim</span><span>Bash</span></dd></div>
-          <div><dt>Security research</dt><dd class="skill-chips"><span>Reconnaissance</span><span>OWASP testing</span><span>Burp Suite</span><span>Nmap</span><span>tcpdump</span><span>Netcat</span><span>Maltego</span><span>Kali Linux</span><span>Parrot OS</span></dd></div>
+          <div><dt>Languages</dt><dd class="skill-chips"><span>Python</span><span>C++</span><span>JavaScript</span><span>Rust</span><span>Nim</span></dd></div>
           <div><dt>AI &amp; vision</dt><dd class="skill-chips"><span>PyTorch</span><span>Tensors</span><span>CNNs</span><span>Embeddings</span><span>RAG</span><span>CUDA</span><span>MDPs</span><span>Hugging Face</span><span>llama.cpp</span><span>OpenCV</span></dd></div>
+          <div><dt>Security research</dt><dd class="skill-chips"><span>Reconnaissance</span><span>OWASP testing</span><span>Burp Suite</span><span>Nmap</span><span>tcpdump</span><span>Netcat</span><span>Maltego</span><span>Kali Linux</span><span>Parrot OS</span></dd></div>
           <div><dt>Reverse engineering</dt><dd class="skill-chips"><span>Ghidra</span><span>Binary Ninja</span><span>QEMU emulation</span><span>RSA</span><span>AES</span><span>Hashing</span><span>Modular arithmetic</span></dd></div>
           <div><dt>Hardware &amp; RF</dt><dd class="skill-chips"><span>Arduino</span><span>UART</span><span>RTL-SDR</span><span>Experimentation</span></dd></div>
         </dl>
         <div class="about-profile-links"><a href="https://github.com/Quantapixel" target="_blank" rel="me noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a><a href="mailto:js.pentesting@proton.me">Get in touch <span aria-hidden="true">↗</span></a></div>
       </div>
+      <aside class="about-page-nav" aria-label="On this page">
+        <p class="about-nav-label">On this page</p>
+        <a href="#about-title">About</a>
+        <a href="#experience-title">Experience</a>
+        <a href="#skills-title">Skills</a>
+      </aside>
       <footer class="scroll-footer"><span>JASKARAN SINGH <span class="footer-alias">/ QUANTAPIXEL</span></span><p class="author-bio">Jaskaran Singh · AI researcher · builder · ctf player</p><div><a href="https://github.com/Quantapixel" rel="me">GitHub ↗</a><a href="https://www.linkedin.com/in/jaskaran0/" rel="me">LinkedIn ↗</a><a href="https://huggingface.co/quantapixel" rel="me">Hugging Face ↗</a><a href="mailto:js.pentesting@proton.me">Email ↗</a></div><span>VIT VELLORE · INDIA</span></footer>
     </section>
   </main>
+  <script>
+    const aboutNavLinks = [...document.querySelectorAll('.about-page-nav a')];
+    const aboutNavSections = aboutNavLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+    function updateAboutNav() {
+      const offset = 120;
+      let current = aboutNavSections[0]?.id;
+      aboutNavSections.forEach(section => {
+        if (section.getBoundingClientRect().top <= offset) current = section.id;
+      });
+      aboutNavLinks.forEach(link => link.classList.toggle('is-active', link.getAttribute('href') === `#${current}`));
+    }
+    addEventListener('scroll', updateAboutNav, { passive: true });
+    updateAboutNav();
+  </script>
 </body>
 </html>

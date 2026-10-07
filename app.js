@@ -161,7 +161,7 @@ const featuredGrid = document.getElementById('featured-grid');
 const featuredProjects = PROJECTS.filter(project => project.featured).slice(0, 2);
 featuredGrid.replaceChildren(...featuredProjects.map((project, index) => createCard(project, index, true)));
 
-const filterState = { category: 'all', tag: 'all' };
+const filterState = { category: 'write-ups', tag: 'all' };
 function renderWorkFilters() {
   const filters = document.getElementById('work-filters');
   if (!filters) return;
@@ -180,7 +180,6 @@ function renderWorkFilters() {
       button.dataset.filterType = value.type;
       button.dataset.filterValue = value.value;
       button.textContent = value.label;
-      if (value.value === 'all') button.classList.add('active');
       button.addEventListener('click', () => {
         filterState[value.type] = value.value;
         updateFilterButtons();
@@ -192,8 +191,9 @@ function renderWorkFilters() {
   };
 
   const categories = [
-    { type: 'category', value: 'all', label: 'All' },
-    { type: 'category', value: 'web-hacking', label: 'Web hacking' }
+    { type: 'category', value: 'projects', label: 'projects' },
+    { type: 'category', value: 'write-ups', label: 'write-ups' },
+    { type: 'category', value: 'research', label: 'research' }
   ];
   const tags = [...new Set(indexProjects.flatMap(project => project.tags || []))].sort();
   const tagValues = [
@@ -224,6 +224,8 @@ function renderWorkFilters() {
   tagGroup.append(tagLabel, tagSelect);
 
   filters.append(makeGroup('Show', categories), tagGroup);
+  updateFilterButtons();
+  applyProjectFilters();
 }
 
 function updateFilterButtons() {

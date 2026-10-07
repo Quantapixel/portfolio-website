@@ -5,7 +5,7 @@ const PROJECTS = [
     name: "Cicada Detroit",
     desc: "Bug bounty for a game website",
     date: "2026-05",
-    category: "web-hacking",
+    category: "write-ups",
     tags: ["javascript", "bug-bounty"],
     lede: "addressed page enumeration, SSRF, advanced XSS, clickjacking risks and DDoS/DoS mitigation vulnerabilities",
     featured: true,

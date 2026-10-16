@@ -12,12 +12,12 @@
     it is not the approximate spiral made from circular quarter-arcs.
   -->
   <style>
-    /* On load the spiral grows out of its pole along its own curve.
-       pathLength="1" makes the dash maths independent of the real length;
-       the path runs outside-in, so a negative offset reveals it centre-first. */
-    .trace { stroke-dasharray: 1 1; stroke-dashoffset: -1; animation: trace 3.2s cubic-bezier(.45, 0, .2, 1) .35s forwards; }
-    .pole { opacity: 0; animation: appear .5s ease-out .15s forwards; }
-    .frame { opacity: 0; animation: appear 1.6s ease-out 1.6s forwards; }
+    /* On load the spiral winds in from its outer edge to the pole along its
+       own curve. pathLength="1" makes the dash maths independent of the real
+       length; the path runs outside-in, so a positive offset draws it in order. */
+    .trace { stroke-dasharray: 1 1; stroke-dashoffset: 1; animation: trace 3.4s cubic-bezier(.3, .15, .15, 1) .3s forwards; }
+    .pole { opacity: 0; animation: appear .6s ease-out 3.2s forwards; }
+    .frame { opacity: 0; animation: appear 1.6s ease-out 1.4s forwards; }
     @keyframes trace { to { stroke-dashoffset: 0; } }
     @keyframes appear { to { opacity: 1; } }
     @media (prefers-reduced-motion: reduce) {

@@ -276,11 +276,13 @@ function renderContributionChart() {
     label.style.gridColumn = `${week + 1} / span 3`;
     months.append(label);
   });
-  const fallback = date => ({ date: date.toISOString().slice(0, 10), count: 0, level: 0 });
+  // Local calendar date; toISOString() would shift the day in UTC+12/+13 zones.
+  const dateKey = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  const fallback = date => ({ date: dateKey(date), count: 0, level: 0 });
   const paint = contributions => {
     const byDate = new Map(contributions.map(item => [item.date, item]));
     grid.replaceChildren(...dates.map(date => {
-      const item = byDate.get(date.toISOString().slice(0, 10)) || fallback(date);
+      const item = byDate.get(dateKey(date)) || fallback(date);
       const cell = document.createElement('span');
       const level = Math.max(0, Math.min(4, Number(item.level) || 0));
       cell.className = `contribution-cell level-${level}`;

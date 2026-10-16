@@ -20,12 +20,14 @@
   background-image: radial-gradient(circle, #bdc6d233 .65px, transparent .9px);
   background-size: 26px 26px;
   background-position: center center;
+  -webkit-mask-image: linear-gradient(180deg, #0009, #0003 42%, #0008);
   mask-image: linear-gradient(180deg, #0009, #0003 42%, #0008);
 }
 
 .geometry-field::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='208' height='208' viewBox='0 0 208 208'%3E%3Cpath d='M100 104h8m-4-4v8' fill='none' stroke='%23bdc6d2' stroke-opacity='.16' stroke-width='.7'/%3E%3C/svg%3E");
   background-position: center center;
+  -webkit-mask-image: radial-gradient(ellipse at 35% 50%, #0003, #000 85%);
   mask-image: radial-gradient(ellipse at 35% 50%, #0003, #000 85%);
 }
 
@@ -38,9 +40,9 @@
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  filter: blur(var(--spiral-blur, 0px));
   opacity: calc(var(--spiral-base-opacity, 1) * var(--spiral-strength, 1));
   /* Keep the geometry quiet behind the introduction and clear on the right. */
+  -webkit-mask-image: linear-gradient(90deg, #0006, #0005 42%, #000 68%);
   mask-image: linear-gradient(90deg, #0006, #0005 42%, #000 68%);
 }
 
@@ -89,6 +91,7 @@ main {
   .golden-bg {
     --spiral-header-height: 70px;
     --spiral-base-opacity: .48;
+    -webkit-mask-image: linear-gradient(90deg, #0001, #0008 65%, #000);
     mask-image: linear-gradient(90deg, #0001, #0008 65%, #000);
   }
 }

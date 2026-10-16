@@ -129,7 +129,7 @@
 @media (max-width: 900px) {
   .about-expanded { display: flex; flex-direction: column; }
   .about-expanded .about-intro { max-width: none; }
-  .about-page-nav { order: -1; position: sticky; top: 76px; z-index: 20; align-self: stretch; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 10px 0; margin: 0 0 26px; border-left: 0; border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2); background: rgba(8,8,8,.94); backdrop-filter: blur(10px); }
+  .about-page-nav { order: -1; position: sticky; top: 76px; z-index: 20; align-self: stretch; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 10px 0; margin: 0 0 26px; border-left: 0; border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2); background: rgba(8,8,8,.97); }
   .about-nav-label { margin: 0 12px 0 0; }
   .about-page-nav a { padding: 5px 0; }
   .about-page-nav a.is-active { border-left: 0; padding-left: 0; }

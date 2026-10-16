@@ -13,17 +13,26 @@
   let blurStart = Infinity;
   let blurRange = 1;
 
+  let lastZoom = '';
+  let lastFilter = '';
+  let lastStrength = '';
   function applySpiral(zoom, blur, strength) {
-    field.style.setProperty('--spiral-zoom', zoom.toFixed(6));
-    field.style.setProperty('--spiral-blur', `${blur.toFixed(2)}px`);
-    field.style.setProperty('--spiral-strength', strength.toFixed(3));
+    // Write only what changed, and drop the filter entirely while it is not
+    // blurring: a full-screen blur(0) still forces an expensive filter pass.
+    const nextZoom = zoom.toFixed(4);
+    const nextFilter = blur > 0.05 ? `blur(${blur.toFixed(1)}px)` : '';
+    const nextStrength = strength.toFixed(3);
+    if (nextZoom !== lastZoom) field.style.setProperty('--spiral-zoom', lastZoom = nextZoom);
+    if (nextFilter !== lastFilter) field.style.filter = lastFilter = nextFilter;
+    if (nextStrength !== lastStrength) field.style.setProperty('--spiral-strength', lastStrength = nextStrength);
   }
 
   function paint() {
     frame = 0;
     const scrollY = window.scrollY;
-    field.hidden = !home || home.hidden;
-    if (field.hidden) return;
+    const hidden = !home || home.hidden;
+    if (field.hidden !== hidden) field.hidden = hidden;
+    if (hidden) return;
     const progress = motion.matches ? 0 : Math.max(0, Math.min(1, scrollY / scrollRange));
     const zoom = Math.pow(maxZoom, progress);
     const approach = Math.max(0, Math.min(1, (scrollY - blurStart) / blurRange));

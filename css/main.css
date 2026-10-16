@@ -14,17 +14,18 @@
   --gold3: rgba(212,175,106,.05);
   --green: #6db87a;
   --red: #c46b6b;
-  --mono: 'JetBrains Mono', monospace;
-  --serif: 'Fraunces', serif;
+  --mono: 'JetBrains Mono', 'JetBrains Mono Fallback', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+  --serif: 'Fraunces', 'Fraunces Fallback', Georgia, 'Times New Roman', serif;
 }
 
 /* Full-width personal portfolio. Original Fraunces / JetBrains Mono pairing. */
 :root { color-scheme: dark; --gutter: clamp(24px, 5vw, 96px); }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; scroll-padding-top: 30px; }
-body { background: var(--bg); color: var(--t2); font-family: var(--mono); font-size: 13px; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+html { scroll-behavior: smooth; scroll-padding-top: 30px; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--t2); font-family: var(--mono); font-size: 13px; line-height: 1.8; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-optical-sizing: auto; }
 a { color: inherit; text-decoration: none; }
-button { font: inherit; color: inherit; cursor: pointer; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button, select { cursor: pointer; }
 a:hover, button:hover { color: var(--gold); }
 a:focus-visible, button:focus-visible, canvas:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; }
 ::selection { background: #594622; color: white; }

@@ -11,6 +11,19 @@
     The logarithmic curve passes through successive square corners;
     it is not the approximate spiral made from circular quarter-arcs.
   -->
+  <style>
+    /* On load the spiral grows out of its pole along its own curve.
+       pathLength="1" makes the dash maths independent of the real length;
+       the path runs outside-in, so a negative offset reveals it centre-first. */
+    .trace { stroke-dasharray: 1 1; stroke-dashoffset: -1; animation: trace 3.2s cubic-bezier(.45, 0, .2, 1) .35s forwards; }
+    .pole { opacity: 0; animation: appear .5s ease-out .15s forwards; }
+    .frame { opacity: 0; animation: appear 1.6s ease-out 1.6s forwards; }
+    @keyframes trace { to { stroke-dashoffset: 0; } }
+    @keyframes appear { to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) {
+      .trace, .pole, .frame { animation: none; stroke-dashoffset: 0; opacity: 1; }
+    }
+  </style>
   <defs>
     <linearGradient id="silver" x1="400" y1="780" x2="1510" y2="190" gradientUnits="userSpaceOnUse">
       <stop stop-color="#747d87" stop-opacity=".12"/>
@@ -22,7 +35,7 @@
       <stop stop-color="#bbc7d8" stop-opacity=".045"/>
       <stop offset="1" stop-color="#bbc7d8" stop-opacity="0"/>
     </radialGradient>
-    <path id="spiral" d="M 154.22912 773.31263
+    <path id="spiral" pathLength="1" d="M 154.22912 773.31263
           C 157.76543 719.35701 164.75148 666.71423 174.86065 615.753
           C 184.96982 564.79177 198.20152 515.5122 214.19853 468.22478
           C 230.19554 420.93735 248.95728 375.6421 270.10464 332.59019
@@ -236,8 +249,8 @@
           C 1312.12551 499.76383 1312.13386 499.77257 1312.14146 499.78163
           C 1312.14907 499.79068 1312.15593 499.80005 1312.16205 499.80963"/>
   </defs>
-  <rect x="154.22912" y="-215.54175" width="1600" height="988.85438" fill="url(#light)"/>
-  <g stroke="#b7c0cc" stroke-opacity=".14" stroke-width=".8">
+  <rect class="frame" x="154.22912" y="-215.54175" width="1600" height="988.85438" fill="url(#light)"/>
+  <g class="frame" stroke="#b7c0cc" stroke-opacity=".14" stroke-width=".8">
     <rect x="154.22912" y="-215.54175" width="1600" height="988.85438"/>
     <path d="M 1143.08351 -215.54175 L 1143.08351 773.31263"/>
     <path d="M 1143.08351 395.60387 L 1754.22912 395.60387"/>
@@ -255,7 +268,7 @@
     <path d="M 1311.47541 499.67579 L 1313.3734 499.67579"/>
     <path d="M 1312.20038 499.67579 L 1312.20038 500.84881"/>
   </g>
-  <use href="#spiral" stroke="#d0dae8" stroke-opacity=".035" stroke-width="7"/>
-  <use href="#spiral" stroke="url(#silver)" stroke-width="1.35" stroke-linecap="round"/>
-  <circle cx="1312" cy="500" r="2" fill="#e2e8f0" fill-opacity=".65"/>
+  <use class="trace" href="#spiral" stroke="#d0dae8" stroke-opacity=".035" stroke-width="7"/>
+  <use class="trace" href="#spiral" stroke="url(#silver)" stroke-width="1.35" stroke-linecap="round"/>
+  <circle class="pole" cx="1312" cy="500" r="2" fill="#e2e8f0" fill-opacity=".65"/>
 </svg>

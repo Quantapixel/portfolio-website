@@ -72,7 +72,8 @@
 .about-intro .contribution-days { flex: 0 0 23px; font-size: 8px; }
 .about-intro .contribution-grid { flex: 1; min-width: 0; grid-template-columns: repeat(52, minmax(0, 1fr)); grid-template-rows: repeat(7, auto); grid-auto-columns: auto; gap: 2px; overflow: visible; }
 .about-intro .contribution-cell { width: 100%; height: auto; aspect-ratio: 1; border-radius: 2px; }
-.about-intro .contribution-months { display: grid; grid-template-columns: repeat(52, minmax(0, 1fr)); min-width: 519px; margin-left: 31px; height: 21px; font-size: 8px; }
+.about-intro .contribution-months span { white-space: nowrap; line-height: 1; }
+.about-intro .contribution-months { display: grid; grid-template-rows: 1fr; grid-template-columns: repeat(52, minmax(0, 1fr)); min-width: 519px; margin-left: 31px; height: 21px; font-size: 8px; }
 .about-intro .contribution-months::before, .about-intro .contribution-months::after { content: none; }
 .about-experience-compact { align-self: stretch; display: flex; flex-direction: column; }
 .about-experience-compact .experience-heading { min-height: 62px; align-items: center; padding: 0 0 18px 25px; }
@@ -102,6 +103,8 @@
   .experience-description { font-size: 10px; }
   .about-section > .about-experience { grid-column: 1; grid-row: auto; }
   #about { grid-template-columns: minmax(0, 1fr); padding-top: 40px; }
+  /* Single column: stack the timeline below the intro instead of sharing row 2. */
+  #about > .about-experience { grid-column: 1; grid-row: 3; }
   .about-experience-compact .experience-entry { padding: 18px; }
   .about-experience-compact .experience-entry::before { left: -25px; }
   .about-experience-compact::before { left: 1px; }

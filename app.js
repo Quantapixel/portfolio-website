@@ -264,16 +264,21 @@ function renderContributionChart() {
   for (let cursor = new Date(start); cursor <= end; cursor.setDate(cursor.getDate() + 1)) dates.push(new Date(cursor));
   const months = document.querySelector('.contribution-months');
   months.replaceChildren();
+  // One label per month at the week it starts; drop a label whose month gets
+  // fewer than three columns (e.g. a partial first month) so none overlap.
+  const starts = [];
   let previousMonth = -1;
   dates.forEach((date, index) => {
-    if (index % 7 !== 0) return;
-    if (date.getMonth() === previousMonth) return;
+    if (index % 7 !== 0 || date.getMonth() === previousMonth) return;
     previousMonth = date.getMonth();
-    const week = index / 7;
-    if (week > 49) return;
+    starts.push({ week: index / 7, date });
+  });
+  starts.forEach(({ week, date }, i) => {
+    const next = starts[i + 1]?.week ?? 52;
+    if (next - week < 3) return;
     const label = document.createElement('span');
     label.textContent = date.toLocaleDateString('en', { month: 'short' });
-    label.style.gridColumn = `${week + 1} / span 3`;
+    label.style.gridArea = `1 / ${week + 1} / 2 / span 3`;
     months.append(label);
   });
   // Local calendar date; toISOString() would shift the day in UTC+12/+13 zones.
@@ -290,6 +295,9 @@ function renderContributionChart() {
       cell.setAttribute('aria-label', cell.title);
       return cell;
     }));
+    // On narrow screens the chart scrolls sideways; start at the latest weeks.
+    const shell = grid.closest('.contribution-shell');
+    if (shell) shell.scrollLeft = shell.scrollWidth;
   };
   paint([]);
   fetch('https://github-contributions-api.jogruber.de/v4/Quantapixel?y=last', { mode: 'cors' })

@@ -1,9 +1,16 @@
 {
   "rewrites": [
     { "source": "/about", "destination": "/about.html" },
-    { "source": "/projects", "destination": "/index.html" }
+    { "source": "/projects", "destination": "/index.html" },
+    { "source": "/resume", "destination": "/files/jaskaran-singh-resume.pdf" }
   ],
   "headers": [
+    {
+      "source": "/resume",
+      "headers": [
+        { "key": "Content-Disposition", "value": "inline; filename=\"Jaskaran-Singh-Resume.pdf\"" }
+      ]
+    },
     {
       "source": "/assets/(.*)",
       "headers": [

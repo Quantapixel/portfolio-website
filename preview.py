@@ -13,6 +13,8 @@ class Handler(SimpleHTTPRequestHandler):
             self.path = '/about.html'
         elif route == '/projects':
             self.path = '/index.html'
+        elif route == '/resume':
+            self.path = '/files/jaskaran-singh-resume.pdf'
         super().do_GET()
 
 if __name__ == '__main__':

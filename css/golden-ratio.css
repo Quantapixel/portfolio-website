@@ -4,6 +4,8 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  contain: strict;
+  transform: translateZ(0);
   background:
     radial-gradient(ellipse at 18% 12%, #a9bdd00a, transparent 48%),
     radial-gradient(ellipse at 72% 88%, #b8a17d06, transparent 44%);
@@ -63,6 +65,7 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .golden-bg { will-change: opacity; }
   .golden-bg-art { will-change: transform; }
 }
 

@@ -10,20 +10,18 @@
   const maxZoom = Math.pow((1 + Math.sqrt(5)) / 2, 3);
   let frame = 0;
   let scrollRange = 1;
-  let blurStart = Infinity;
-  let blurRange = 1;
+  let fadeStart = Infinity;
+  let fadeRange = 1;
 
   let lastZoom = '';
-  let lastFilter = '';
   let lastStrength = '';
-  function applySpiral(zoom, blur, strength) {
-    // Write only what changed, and drop the filter entirely while it is not
-    // blurring: a full-screen blur(0) still forces an expensive filter pass.
+  function applySpiral(zoom, strength) {
+    // Write only what changed. The spiral recedes by fading, not blurring: a
+    // full-screen blur re-rasterised on every scroll frame caused scroll jank,
+    // while opacity and transform stay on the compositor.
     const nextZoom = zoom.toFixed(4);
-    const nextFilter = blur > 0.05 ? `blur(${blur.toFixed(1)}px)` : '';
     const nextStrength = strength.toFixed(3);
     if (nextZoom !== lastZoom) field.style.setProperty('--spiral-zoom', lastZoom = nextZoom);
-    if (nextFilter !== lastFilter) field.style.filter = lastFilter = nextFilter;
     if (nextStrength !== lastStrength) field.style.setProperty('--spiral-strength', lastStrength = nextStrength);
   }
 
@@ -35,11 +33,10 @@
     if (hidden) return;
     const progress = motion.matches ? 0 : Math.max(0, Math.min(1, scrollY / scrollRange));
     const zoom = Math.pow(maxZoom, progress);
-    const approach = Math.max(0, Math.min(1, (scrollY - blurStart) / blurRange));
+    const approach = Math.max(0, Math.min(1, (scrollY - fadeStart) / fadeRange));
     const softness = approach * approach * (3 - 2 * approach);
-    const blur = softness * 3;
-    const strength = 1 - softness * 0.3;
-    applySpiral(zoom, blur, strength);
+    const strength = 1 - softness * 0.5;
+    applySpiral(zoom, strength);
   }
 
   function schedule() {
@@ -54,8 +51,8 @@
     const aboutTop = about && !about.hidden
       ? about.getBoundingClientRect().top + window.scrollY
       : Infinity;
-    blurStart = aboutTop - viewportHeight * 0.9;
-    blurRange = Math.max(1, window.innerHeight * 0.9 - headerHeight);
+    fadeStart = aboutTop - viewportHeight * 0.9;
+    fadeRange = Math.max(1, window.innerHeight * 0.9 - headerHeight);
     schedule();
   }
 

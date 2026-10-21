@@ -3,6 +3,7 @@
 .scanlines {
   pointer-events: none;
   position: fixed; inset: 0; z-index: 9000;
+  contain: strict; transform: translateZ(0);
   background: repeating-linear-gradient(
     0deg,
     transparent,
@@ -16,6 +17,7 @@
 .noise {
   pointer-events: none;
   position: fixed; inset: 0; z-index: 8999; opacity: .018;
+  contain: strict; transform: translateZ(0);
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 180px;
 }
@@ -57,6 +59,9 @@ nav a, .header-contact { border: 1px solid var(--border2); border-radius: 4px; p
 nav a[aria-current] { color: var(--t2); border-color: #404040; }
 nav a[aria-current]:after { display: none; }
 nav a:hover, .header-contact:hover { border-color: var(--gold); color: var(--gold); }
+nav a.nav-resume { color: var(--gold); border-color: #4e4229; white-space: nowrap; }
+nav a.nav-resume:hover { border-color: var(--gold); background: var(--gold3); }
+nav a.nav-resume span { margin-left: 6px; }
 .hero { min-height: 660px; grid-template-columns: 1.15fr 1fr; padding-top: 60px; gap: 30px; }
 .hero-copy { padding: 30px 0 45px; }
 .hero h1 { font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 1.05; letter-spacing: -.02em; font-weight: 300; color: var(--t1); }
@@ -195,8 +200,9 @@ html { scroll-padding-top: 0; }
 #home .glitch-name { font-size: clamp(46px,6vw,84px); }
 #home .hero-copy { max-width: 700px; }
 .project-card-end { display: flex; flex-direction: column; align-items: end; justify-content: space-between; min-height: 205px; }
-.reveal { opacity: 0; transform: translateY(32px); filter: blur(3px); transition: opacity .85s ease, transform .85s cubic-bezier(.18,.65,.25,1), filter .85s ease; }
-.reveal.is-visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+/* Opacity and transform only: both stay on the compositor while the page scrolls. */
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity .85s ease, transform .85s cubic-bezier(.18,.65,.25,1); }
+.reveal.is-visible { opacity: 1; transform: none; }
 .project-card:nth-child(2) { transition-delay: .14s; }.project-card:nth-child(3) { transition-delay: .28s; }
 #home .scene.reveal { transition-delay: .16s; }
 @media (prefers-reduced-motion: reduce) { .reveal,.reveal.is-visible,.project-card { opacity: 1; filter: none; transform: none; transition: none; } }

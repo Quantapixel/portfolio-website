@@ -9,6 +9,7 @@ Run `python3 preview.py`, then visit http://127.0.0.1:4181. Home and About scrol
 ## Editing
 
 - `index.html`: the homepage, biography, contact links, work index, and detail-view structure.
+- `files/jaskaran-singh-resume.pdf`: the resume behind the header's “resume” button, served at `/resume`. Replace the file to update it.
 - `content.js`: the published project entry. The entry marked `featured: true` appears on the homepage. The article body is locally authored HTML.
 - `app.js`: homepage section navigation, `/projects` routing, detail views, history/scroll restoration, scroll reveals, and the GitHub contribution grid.
 - `css/main.css` and `css/terminal-identity.css`: palette, typography, layout, animations, and responsive styles. `css/featured-work.css` styles the homepage features and separate work index. `css/about-profile.css` styles the About bio, toolkit, and experience timeline; the profile copy and dates in `index.html` come from the LinkedIn text supplied by Jaskaran.
